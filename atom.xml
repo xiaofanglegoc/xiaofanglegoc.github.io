@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[在路上]]></title>
+  <subtitle><![CDATA[保持前行，不忘初心。]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://zhangliliang.com/"/>
+  <updated>2016-07-03T12:01:05.725Z</updated>
+  <id>http://zhangliliang.com/</id>
+  
+  <author>
+    <name><![CDATA[Zhang Liliang]]></name>
+    <email><![CDATA[zhangll.level0@gmail.com]]></email>
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[论文笔记 《HyperNet: Towards Accurate Region Proposal Generation and Joint Object Detection》]]></title>
+    <link href="http://zhangliliang.com/2016/04/05/paper-note-hypernet/"/>
+    <id>http://zhangliliang.com/2016/04/05/paper-note-hypernet/</id>
+    <published>2016-04-05T13:02:05.000Z</published>
+    <updated>2016-07-03T12:01:05.725Z</updated>
+    <content type="html"><![CDATA[<p>论文出处是CVPR2016的Spotlight，目前只有arxiv版本：<a href="http://arxiv.org/pdf/1604.00600.pdf" target="_blank" rel="external">http://arxiv.org/pdf/1604.00600.pdf</a></p>
+<h2 id="概述">概述</h2><p>文章做的问题是通用物体检测，基本框架如下图所示：<br><img src="http://7j1yz3.com1.z0.glb.clouddn.com/小Q截图-20160405210704.png" alt=""></p>
+<p>基本可以理解成基于Faster R-CNN做了一些改进。</p>
+<p>这里先简述Faster R-CNN的基本要素（因为之前没有空写Faster R-CNN就在这里简单review好了= =）。如下图所示，Faster RCNN可以理解成RPN + Fast R-CNN。即用RPN（Region Proposal Network）来提取proposal，然后用Fast R-CNN的分类器（即3个全连接层加上softmax分类器）作为detector，对这些proposal进行类别上的识别。另外，RPN跟Fast R-CNN能够通过分步训练达到sharing卷积部分，能够在inference阶段一次forward就直接得到proposal和detection的结果。<br><img src="http://7j1yz3.com1.z0.glb.clouddn.com/小Q截图-20160405212339.png" alt=""></p>
+<p>回到这篇文章，文章提出的框架称为HyperNet，比起Faster R-CNN，它的最主要改进是使用了多层特征融合（作者称之为Hyper feature extraction，也就是hyperNet的由来）。除了之外的trick还有，增加额外的Conv层来提取信息（增加网络深度），以及提到了如何做加速。下面分段叙述。</p>
+<h2 id="多层特征融合">多层特征融合</h2><p>作者在文章中提到，使用多层特征融合的动机是用于处理小尺度物体。具体来说，在CNN中，一般分类器都是直接接在最顶层的Conv上的，而这个Conv经过多次pooling后，其实“缩水”得很厉害。比如在VGG-16中，Conv5_3的长和宽都缩水到原图片的1/16。这样就会导致对于某些小物体很难提取到精细的特征（比如，对于32x32的物体，Conv5_3的feature只剩下2x2大小，就很不精细了）。</p>
+<p>要解决的办法其实也很直观，既然顶层的Conv层缩水了，那么就把它扩大就可以了，所以这里使用了Deconv来对高层特征进行上采样。同时，还可以接上浅层的Conv层来进一步增加判别性。这样就可以得到更加精细，判别性更强的特征了。</p>
+<p>另外，在concat不同层特征的时候，作者做了一个LRN的正则化。正则化的步骤应该是必须的（但不限于使用LRN）。这是因为不同层的特征有着不一样的norm，如果直接concat到一起，norm大的特征就会抑制住norm小的特征，这样很容易就会学不好。这个观察是在ParseNet中提出的，具体可以参考：<a href="http://www.cs.unc.edu/~wliu/papers/parsenet.pdf" target="_blank" rel="external">http://www.cs.unc.edu/~wliu/papers/parsenet.pdf</a></p>
+<h2 id="增加额外的Conv层">增加额外的Conv层</h2><p>在HyperNet中，在很多地方都添加了额外的Conv层，比如在多层特征融合的时候，对于每层特征后面都接一个Conv层，在ROI pooling之后，也接了额外的Conv层。注意到接上的这些Conv层其实也都起到了压缩特征长度减少网络参数的作用，对于防止过拟合应该也有一定作用。</p>
+<h2 id="加速">加速</h2><p>文章提到他们使用VGG16也能达到5fps，除了使用了Titan X显卡之外，最主要的trick是交换了13x13x126的ROI pooling层和3x3x4的Conv层。<br>但其实本人觉得这样固然比原来快，但为何不在训练前就直接交换，而不是训练后在测试阶段才交换位置？感觉这一步蛮奇怪的。<br><img src="http://7j1yz3.com1.z0.glb.clouddn.com/小Q截图-20160405214318.png" alt=""></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[可以理解成是Faster R-CNN的改进版，使用了多层特征融合来加强判别性来提高效果。]]>
+    
+    </summary>
+    
+      <category term="CNN" scheme="http://zhangliliang.com/tags/CNN/"/>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+      <category term="Object Detection" scheme="http://zhangliliang.com/tags/Object-Detection/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[课堂笔记《Introduction to Aerial Robotics》]]></title>
+    <link href="http://zhangliliang.com/2016/03/31/mooc-introduction-to-aerial-robotics/"/>
+    <id>http://zhangliliang.com/2016/03/31/mooc-introduction-to-aerial-robotics/</id>
+    <published>2016-03-31T02:54:37.000Z</published>
+    <updated>2016-04-01T15:02:33.444Z</updated>
+    <content type="html"><![CDATA[<p>课程地址：<a href="https://www.coursera.org/learn/robotics-flight" target="_blank" rel="external">https://www.coursera.org/learn/robotics-flight</a><br>对应的guokr讨论：<a href="http://mooc.guokr.com/course/6888/Robotics--Aerial-Robotics/" target="_blank" rel="external">http://mooc.guokr.com/course/6888/Robotics--Aerial-Robotics/</a></p>
+<p>看评论是说没学过控制的人学起来很困难啊，那么先试试吧，看看能坚持到哪一步。:)</p>
+<h2 id="1-1-_Introduction">1.1. Introduction</h2><p>由于是入门课讲的都是比较基础的东西，简单介绍了一下无人机（Unmanned Aerial Vehicles, UAVs），主要是讲四旋翼（quadrotor）。</p>
+<ul>
+<li>民用小型飞行器（貌似一般是叫Drones）目前的市场是15B，估计2020年是25B（话说新闻说DJI在2015年的就卖了10B了，amazing）</li>
+<li>Quadrotor有6个自由度，3个平移和3个旋转的。</li>
+<li>Quadrotor的关键部件有：State estimation，Control，Mapping和Planning。</li>
+<li>State estimation需要知道飞行器的位置和速度，一个关键部分应该是IMU，IMU可以得到3轴的线性加速度和3轴的角速度，见<a href="http://ssl.umd.edu/projects/RangerNBV/thesis/2-4-1.htm" target="_blank" rel="external">这里</a>。</li>
+<li>Control指控制发动机使得飞行器处于某个设定的state的过程。</li>
+<li>Mapping对应感知，要让飞行器知道目前所处于的环境。</li>
+<li>Planning指的是在感知到环境之后，飞行器通过路径规划来避开障碍物到达目的地的过程。</li>
+<li>课程引入SLAM（simultaneous localization and mapping）是在state estimation的一节，所以我就理解成SLAM是将state estimation和mapping同时做的过程了。在三维的SLAM中，需要估计的量包括，3维的位移量，飞行器的朝向变化，3维的线速度和3维的角速度。</li>
+</ul>
+<h2 id="1-2-_Energetics_and_System_Design">1.2. Energetics and System Design</h2><p>感觉难度马上上去了，毕竟本人物理已经忘得差不多了囧。</p>
+<ul>
+<li>为何四旋翼有一对是顺时针另外一对是逆时针？因为如果四个都是一个方向，飞行器就会一直打转。。。</li>
+<li><img src="http://7j1yz3.com1.z0.glb.clouddn.com/小Q截图-20160401163058.png" alt=""><br>这个图（对我来说）比较复杂，横轴是旋翼的角速度或者RPM（每分钟转速），纵轴是上升的推力，它们可以建模成平方的关系，$F=k_F\omega^2$。由于有四个旋翼，那么每个旋翼需要承担四分一的机身重量，所以根据$W_0 = \frac{1}{4}mg$可以得到每个旋翼在悬停时候需要的角速度$\omega_0$。但是旋翼的旋转会引入一个drag moment（理解成发动机产生的摩擦力？），这个drag moment跟旋翼的角速度也是平方的关系，$M=k_M\omega^2$。这个drag moment需要通过torque-speed characteristics（转矩-速度特性）来调节发动机的torque来平衡掉。</li>
+<li>当这些力和力矩是平衡的时候，飞行器会悬停（或者保持匀速运动），不平衡时，就会引入加速度$a$，比如将相对的两个旋翼的角速度加快，那么飞行器就会加速上升，反之是加速下降。</li>
+<li><img src="http://7j1yz3.com1.z0.glb.clouddn.com/小Q截图-20160401174937.png" alt=""><br>对于控制，这一节中只考虑控制高度，也就是z方向，这可以建模成一个二阶的动态系统，为什么是二阶？因为控制考虑只需要考虑垂直方向的位移$x$，然后系统的输入是加速度$a$（上图中也用$u$来表示这个输入），即位移的二阶导数（x上加两点表示），所以这是一个二阶的动态系统。（注：动态系统我理解成系统的状态是随着时间推移渐变的，而不是一下子剧变，也就是输入-输出曲线应该是一条平滑的曲线而不是折线。）</li>
+<li><img src="http://7j1yz3.com1.z0.glb.clouddn.com/小Q截图-20160401175655.png" alt=""><br>进一步地，这个二阶动态系统可以建模成，在t时刻期待的位移是$x^{des}(t)$，要求此时的模型在输入为$u$的加速度下的所行进的路径$x$尽可能接近$x^{des}(t)$。为了达到t时刻的误差$e(t)$能够指数级别地接近0，可以引入方程$\ddot{e}+K_v\dot{e}+K_pe=0$，并取一组解$K_p$和$K_v$满足它们都大于0。然后将$K_p$和$K_v$代入到$u(t)=\ddot{x}^{des}(t)+K_v\dot{e}(t)+K_pe(t)$就可以了。这个“简单”的控制方法成为PD控制方法，其中P for Proportional（比例项，因为它是e乘以一个系数$K_p$），D for Derivative（导数项，因为它是e的一阶导数乘以一个系数$K_v$）。</li>
+<li><img src="http://7j1yz3.com1.z0.glb.clouddn.com/小Q截图-20160401221343.png" alt=""><br>直观理解上，P理解成弹簧或者电容，而D理解成阻尼或者电阻。如果P越大，那么系统响应越快，但是也越震荡，也更容易overshoot。如果D越大，那么系统收敛变慢，但同时也没有那么容易overshoot。另外，当模型有类似风的干扰或者系统错误时，可以引入积分项I来解决，这个控制模型叫PID控制。</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[PennU的机器人课。时隔多年又开始刷课，不知道这次能坚持多久:)]]>
+    
+    </summary>
+    
+      <category term="MOOC" scheme="http://zhangliliang.com/tags/MOOC/"/>
+    
+      <category term="UAV" scheme="http://zhangliliang.com/tags/UAV/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Caffe源码阅读（3）Softmax层和SoftmaxLoss层]]></title>
+    <link href="http://zhangliliang.com/2015/05/27/about-caffe-code-softmax-loss-layer/"/>
+    <id>http://zhangliliang.com/2015/05/27/about-caffe-code-softmax-loss-layer/</id>
+    <published>2015-05-27T02:04:59.000Z</published>
+    <updated>2015-06-21T02:36:24.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="关于softmax回归">关于softmax回归</h2><p>看过最清晰的关于softmax回归的文档来源自<a href="http://ufldl.stanford.edu/wiki/index.php/Softmax%E5%9B%9E%E5%BD%92" target="_blank" rel="external">UFLDL</a>，简单摘录如下。<br>softmax用于多分类问题，比如0-9的数字识别，共有10个输出，而且这10个输出的概率和加起来应该为1，所以可以用一个softmax操作归一化这10个输出。进一步一般化，假如共有k个输出，softmax的假设可以形式化表示为：<br><img src="http://ufldl.stanford.edu/wiki/images/math/a/1/b/a1b0d7b40fe624cd8a24354792223a9d.png" alt=""><br>然后给这个假设定义一个loss function，就是softmax回归的loss function咯，形式化如下：<br><img src="http://ufldl.stanford.edu/wiki/images/math/7/6/3/7634eb3b08dc003aa4591a95824d4fbd.png" alt=""><br>也很直观，对于某个样本i，他对应的gt label是j，那么对于loss function来说，显然只需要关心第k路是否是一个概率很大的值，所以就用一个l{·}的示性函数来表示只关心第$y^{(i)}$路(即label对应的那一路)，其他路都忽略为0。然后log的部分其实就是第k路的概率值取log。最后需要注意到前面还有一个负号。<br>所以总的来说，这个loss function的意思是说，对于某个样本，我只看他gt对应的那个路子输出的概率，然后取一个-log从最大化概率变成最小化能量。<br>然后softmax可以求梯度，梯度的公式是：<br><img src="http://ufldl.stanford.edu/wiki/images/math/5/9/e/59ef406cef112eb75e54808b560587c9.png" alt=""><br>然后在实际应用中，一般还是要加上一个正则项，或者在UFLDL教程中被称为权重衰减项，于是loss function和回传梯度都多出了一项，变成了：<br><img src="http://ufldl.stanford.edu/wiki/images/math/4/7/1/471592d82c7f51526bb3876c6b0f868d.png" alt=""><br><img src="http://ufldl.stanford.edu/wiki/images/math/3/a/f/3afb4b9181a3063ddc639099bc919197.png" alt=""><br>然后softmax回归就介绍完了，感觉不懂的话具体还是看UFLDL的教程比较好。</p>
+<h2 id="Caffe中的实现">Caffe中的实现</h2><p>注意这里贴的代码是基于笔者所使用的caffe版本的，大概是2015年初的吧，跟目前的最新caffe版本可能有所出入。<br>在实现细节上，train时候在最后接上<code>SoftmaxWithLossLayer</code>，test的时候换成<code>SoftmaxLayer</code>即可。这里可以看<code>loss_layer.hpp</code>的注释:<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">* This layer should be preferred <span class="keyword">over</span> separate</span><br><span class="line">* SoftmaxLayer + MultinomialLogisticLossLayer</span><br><span class="line">* <span class="keyword">as</span> <span class="keyword">its</span> gradient computation <span class="keyword">is</span> more numerically stable.</span><br><span class="line">* At test <span class="property">time</span>, this layer can be replaced simply <span class="keyword">by</span> a SoftmaxLayer.</span><br></pre></td></tr></table></figure></p>
+<p>先看<code>softmax_layer.cpp</code>，由于只会用到他的forward，所以只看forward就好了。代码如下：<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename Dtype&gt;</span><br><span class="line">void SoftmaxLayer&lt;Dtype&gt;::Forward_cpu(<span class="keyword">const</span> vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom,</span><br><span class="line">    vector&lt;Blob&lt;Dtype&gt;*&gt;* top) &#123;</span><br><span class="line">  <span class="keyword">const</span> Dtype* bottom_data = bottom[<span class="number">0</span>]-&gt;cpu_data();</span><br><span class="line">  Dtype* top_data = (*top)[<span class="number">0</span>]-&gt;mutable_cpu_data();</span><br><span class="line">  Dtype* scale_data = scale_.mutable_cpu_data();</span><br><span class="line">  <span class="keyword">int</span> num = bottom[<span class="number">0</span>]-&gt;num();</span><br><span class="line">  <span class="keyword">int</span> channels = bottom[<span class="number">0</span>]-&gt;channels();</span><br><span class="line">  <span class="keyword">int</span> dim = bottom[<span class="number">0</span>]-&gt;count() / bottom[<span class="number">0</span>]-&gt;num();</span><br><span class="line">  <span class="keyword">int</span> spatial_dim = bottom[<span class="number">0</span>]-&gt;height() * bottom[<span class="number">0</span>]-&gt;width();</span><br><span class="line">  caffe_copy(bottom[<span class="number">0</span>]-&gt;count(), bottom_data, top_data);</span><br><span class="line">  <span class="comment">// We need to subtract the max to avoid numerical issues, compute the exp,</span></span><br><span class="line">  <span class="comment">// and then normalize.</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num; ++i) &#123;</span><br><span class="line">    <span class="comment">// initialize scale_data to the first plane</span></span><br><span class="line">    caffe_copy(spatial_dim, bottom_data + i * dim, scale_data);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; channels; j++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; spatial_dim; k++) &#123;</span><br><span class="line">        scale_data[k] = std::max(scale_data[k],</span><br><span class="line">            bottom_data[i * dim + j * spatial_dim + k]);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// subtraction</span></span><br><span class="line">    caffe_cpu_gemm&lt;Dtype&gt;(CblasNoTrans, CblasNoTrans, channels, spatial_dim,</span><br><span class="line">        <span class="number">1</span>, -<span class="number">1</span>., sum_multiplier_.cpu_data(), scale_data, <span class="number">1</span>., top_data + i * dim);</span><br><span class="line">    <span class="comment">// exponentiation</span></span><br><span class="line">    caffe_exp&lt;Dtype&gt;(dim, top_data + i * dim, top_data + i * dim);</span><br><span class="line">    <span class="comment">// sum after exp</span></span><br><span class="line">    caffe_cpu_gemv&lt;Dtype&gt;(CblasTrans, channels, spatial_dim, <span class="number">1</span>.,</span><br><span class="line">        top_data + i * dim, sum_multiplier_.cpu_data(), <span class="number">0</span>., scale_data);</span><br><span class="line">    <span class="comment">// division</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; channels; j++) &#123;</span><br><span class="line">      caffe_div(spatial_dim, top_data + (*top)[<span class="number">0</span>]-&gt;offset(i, j), scale_data,</span><br><span class="line">          top_data + (*top)[<span class="number">0</span>]-&gt;offset(i, j));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看出基本就是softmax的假设时候的实现公式，即这条。<br><img src="http://ufldl.stanford.edu/wiki/images/math/a/1/b/a1b0d7b40fe624cd8a24354792223a9d.png" alt=""><br>不同之处是先求取max然后所有值先减去了这个max，目的作者也给了注释是数值问题，毕竟之后是要接上e为底的指数运算的，所以值不可以太大，这个操作相当合理。</p>
+<p>然后就到了<code>softmax_loss_layer.cpp</code>了，总共代码不超100行，就全贴在下面了:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> &lt;algorithm&gt;</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> &lt;cfloat&gt;</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> &lt;vector&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> "caffe/layer.hpp"</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> "caffe/util/math_functions.hpp"</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> "caffe/vision_layers.hpp"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> caffe &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dtype&gt;</span><br><span class="line"><span class="keyword">void</span> SoftmaxWithLossLayer&lt;Dtype&gt;::LayerSetUp(</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom, <span class="built_in">vector</span>&lt;Blob&lt;Dtype&gt;*&gt;* top) &#123;</span><br><span class="line">  LossLayer&lt;Dtype&gt;::LayerSetUp(bottom, top);</span><br><span class="line">  softmax_bottom_vec_.clear();</span><br><span class="line">  softmax_bottom_vec_.push_back(bottom[<span class="number">0</span>]);</span><br><span class="line">  softmax_top_vec_.clear();</span><br><span class="line">  softmax_top_vec_.push_back(&amp;prob_);</span><br><span class="line">  softmax_layer_-&gt;SetUp(softmax_bottom_vec_, &amp;softmax_top_vec_);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dtype&gt;</span><br><span class="line"><span class="keyword">void</span> SoftmaxWithLossLayer&lt;Dtype&gt;::Reshape(</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom, <span class="built_in">vector</span>&lt;Blob&lt;Dtype&gt;*&gt;* top) &#123;</span><br><span class="line">  LossLayer&lt;Dtype&gt;::Reshape(bottom, top);</span><br><span class="line">  softmax_layer_-&gt;Reshape(softmax_bottom_vec_, &amp;softmax_top_vec_);</span><br><span class="line">  <span class="keyword">if</span> (top-&gt;size() &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="comment">// softmax output</span></span><br><span class="line">    (*top)[<span class="number">1</span>]-&gt;ReshapeLike(*bottom[<span class="number">0</span>]);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dtype&gt;</span><br><span class="line"><span class="keyword">void</span> SoftmaxWithLossLayer&lt;Dtype&gt;::Forward_cpu(</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom, <span class="built_in">vector</span>&lt;Blob&lt;Dtype&gt;*&gt;* top) &#123;</span><br><span class="line">  <span class="comment">// The forward pass computes the softmax prob values.</span></span><br><span class="line">  softmax_layer_-&gt;Forward(softmax_bottom_vec_, &amp;softmax_top_vec_);</span><br><span class="line">  <span class="keyword">const</span> Dtype* prob_data = prob_.cpu_data();</span><br><span class="line">  <span class="keyword">const</span> Dtype* label = bottom[<span class="number">1</span>]-&gt;cpu_data();</span><br><span class="line">  <span class="keyword">int</span> num = prob_.num();</span><br><span class="line">  <span class="keyword">int</span> dim = prob_.count() / num;</span><br><span class="line">  <span class="keyword">int</span> spatial_dim = prob_.height() * prob_.width();</span><br><span class="line">  Dtype loss = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; spatial_dim; j++) &#123;</span><br><span class="line">      loss -= <span class="built_in">log</span>(<span class="built_in">std</span>::max(prob_data[i * dim +</span><br><span class="line">          <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(label[i * spatial_dim + j]) * spatial_dim + j],</span><br><span class="line">                           Dtype(FLT_MIN)));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  (*top)[<span class="number">0</span>]-&gt;mutable_cpu_data()[<span class="number">0</span>] = loss / num / spatial_dim;</span><br><span class="line">  <span class="keyword">if</span> (top-&gt;size() == <span class="number">2</span>) &#123;</span><br><span class="line">    (*top)[<span class="number">1</span>]-&gt;ShareData(prob_);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dtype&gt;</span><br><span class="line"><span class="keyword">void</span> SoftmaxWithLossLayer&lt;Dtype&gt;::Backward_cpu(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;Blob&lt;Dtype&gt;*&gt;&amp; top,</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&amp; propagate_down,</span><br><span class="line">    <span class="built_in">vector</span>&lt;Blob&lt;Dtype&gt;*&gt;* bottom) &#123;</span><br><span class="line">  <span class="keyword">if</span> (propagate_down[<span class="number">1</span>]) &#123;</span><br><span class="line">    LOG(FATAL) &lt;&lt; <span class="keyword">this</span>-&gt;type_name()</span><br><span class="line">               &lt;&lt; <span class="string">" Layer cannot backpropagate to label inputs."</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (propagate_down[<span class="number">0</span>]) &#123;</span><br><span class="line">    Dtype* bottom_diff = (*bottom)[<span class="number">0</span>]-&gt;mutable_cpu_diff();</span><br><span class="line">    <span class="keyword">const</span> Dtype* prob_data = prob_.cpu_data();</span><br><span class="line">    caffe_copy(prob_.count(), prob_data, bottom_diff);</span><br><span class="line">    <span class="keyword">const</span> Dtype* label = (*bottom)[<span class="number">1</span>]-&gt;cpu_data();</span><br><span class="line">    <span class="keyword">int</span> num = prob_.num();</span><br><span class="line">    <span class="keyword">int</span> dim = prob_.count() / num;</span><br><span class="line">    <span class="keyword">int</span> spatial_dim = prob_.height() * prob_.width();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num; ++i) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; spatial_dim; ++j) &#123;</span><br><span class="line">        bottom_diff[i * dim + <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(label[i * spatial_dim + j])</span><br><span class="line">            * spatial_dim + j] -= <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Scale gradient</span></span><br><span class="line">    <span class="keyword">const</span> Dtype loss_weight = top[<span class="number">0</span>]-&gt;cpu_diff()[<span class="number">0</span>];</span><br><span class="line">    caffe_scal(prob_.count(), loss_weight / num / spatial_dim, bottom_diff);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#ifdef CPU_ONLY</span></span><br><span class="line">STUB_GPU(SoftmaxWithLossLayer);</span><br><span class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">INSTANTIATE_CLASS(SoftmaxWithLossLayer);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;  <span class="comment">// namespace caffe</span></span><br></pre></td></tr></table></figure></p>
+<p>其实这个函数挺好懂的，总结起来大致是：</p>
+<ul>
+<li>首先这里直接内置了一个SoftmaxLayer，利用它直接得到概率值prob_</li>
+<li>之后的forward和backward都很直观了，就是没有正则项的loss function和梯度的实现方式。（这里为啥没有考虑正则项，是因为正则项的代码不是写在这这里的，而是在更新梯度时候再一起考虑的，具体可以看layer的更新代码，会发现考虑了一个叫decay的东西）</li>
+<li>这里有了spatial_dim的概念后，就可以直接支持做全图的softmax了，具体来可以参考<a href="/2014/11/28/paper-note-fcn-segment/">FCN</a>一文中最后做20类分类的概率图的那个全图softmax</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[记录Caffe源码阅读过程的笔记，这篇是关于Softmax的]]>
+    
+    </summary>
+    
+      <category term="CNN" scheme="http://zhangliliang.com/tags/CNN/"/>
+    
+      <category term="tools" scheme="http://zhangliliang.com/tags/tools/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记 《What makes for effective detection proposals?》]]></title>
+    <link href="http://zhangliliang.com/2015/05/19/paper-note-object-proposal-review-pami15/"/>
+    <id>http://zhangliliang.com/2015/05/19/paper-note-object-proposal-review-pami15/</id>
+    <published>2015-05-19T01:35:02.000Z</published>
+    <updated>2015-05-19T06:22:30.000Z</updated>
+    <content type="html"><![CDATA[<p>最近开始准备回到detection大坑，刚好看到一篇关于object proposal的综述，而且貌似是中了PAMI的，所以就下载下来读了一下。<br>论文的项目地址：<br><a href="https://www.mpi-inf.mpg.de/departments/computer-vision-and-multimodal-computing/research/object-recognition-and-scene-understanding/how-good-are-detection-proposals-really/" target="_blank" rel="external">https://www.mpi-inf.mpg.de/departments/computer-vision-and-multimodal-computing/research/object-recognition-and-scene-understanding/how-good-are-detection-proposals-really/</a></p>
+<h2 id="大纲">大纲</h2><p>根据文章的描述顺序，以下内容大概会是：</p>
+<ol>
+<li>回顾object proposal（以下简称为OP）的各种方法，将其分类。</li>
+<li>讨论不同OP在图片被扰动之后的在复现上的鲁棒性</li>
+<li>讨论不同OP在PASCAL和ImageNet上的Recall，这里作者提出了Average Recall（简称AR）的一种新的标准</li>
+<li>讨论不同OP对于实际分类的性能比较（用了DPM和RCNN这两个著名detector进行比较），以及说明了AR是一个跟性能相当相关的标准。</li>
+</ol>
+<p>先上一个效果的一览表格：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150519105213.png" alt=""><br>注意到这里只列出了可以找到源码的方法，那么，下面一点点开始整理。</p>
+<h2 id="各种OP方法的回顾">各种OP方法的回顾</h2><p>作者大致将OP方法分成了两类，一类叫grouping method，一类叫window scoring method。前者是指先将图片打碎，然后再聚合的一种方法，比如selective search。后者是生成大量window并打分，然后过滤掉低分的一种方法，比如objectness。另外还有一些介乎两者之间的方法，比如multibox。</p>
+<h3 id="Grouping_proposal_methods">Grouping proposal methods</h3><p>作者将grouping的方法继续细分为三个小类。SP，对superpixel进行聚合；GC，使用种子点然后groupcut进行分割；EC，从边缘图提取proposal。下面分别调一个进行介绍</p>
+<ul>
+<li>SelectiveSearch (SP): 无需学习，首先将图片打散为superpixel，然后根据人为定义的距离进行聚合。</li>
+<li>CPMC (GC): 随机初始化种子点，然后做graphcut进行分割，反复多次，然后定义了某个很长的特征进行排序。（所以速度超级慢）</li>
+<li>MCG (EC): 首先用现成方法快速得到一个层次分割的结果，然后利用边缘信息进行聚合。 </li>
+</ul>
+<h3 id="Window_scoring_proposal_methods">Window scoring proposal methods</h3><p>不同于前者需要通过聚合小块来生成候选框，这里的方法是先生成候选框，然后直接打分排序来过滤掉低分的候选框。介绍两种比较出名的方法，</p>
+<ul>
+<li>Bing: 训练了一个简单的线性分类器来通过类似滑窗的方式来过滤候选框，速度惊人地快，在CPU上能够达到ms级别。但是被文献[40]攻击说分类性能不是来自于学习而是几何学。</li>
+<li>EdgeBoxes: 跟selective search一样是一个不需要学习的方法，结合滑窗，通过计算窗口内边缘个数进行打分，最后排序。</li>
+</ul>
+<h3 id="Aliternate_proposal_methods">Aliternate proposal methods</h3><ul>
+<li>multibox，目前笔者所知唯一基于CNN提取proposal的方法，通过CNN回归N个候选框的位置并进行打分，目前在ImageNet的dectection track上应该是第一的。</li>
+</ul>
+<h3 id="Baseline_proposal_methods">Baseline proposal methods</h3><p>这里用了Uniform，Gaussian，Sliding Window和Superpixels作为baseline，不是重点就不展开说了。</p>
+<h2 id="各种OP方法对于复现的鲁棒性的讨论">各种OP方法对于复现的鲁棒性的讨论</h2><p>这里作者提出这样的假设：一个好的OP方法应该具有比较好的复现能力，也就是相似的图片中检索出来的object应该是具有一致性的。验证的方法是对PASCAL的图片做了各种扰动（如Figure 2），然后看是否还能检测出来相同的object的recall是多少，根据IoU的严格与否能够得到一条曲线，最后计算曲线下面积得到repeatability。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150519105232.png" alt=""><br>这里图表很多具体请看原论文，这里直接上作者的结论，Bing和Edgeboxes在repeatability上表现最好。</p>
+<h2 id="各种OP方法的recall">各种OP方法的recall</h2><p>这里提出了好的OP方法应该有着较高的recall，不然就要漏掉检测的物体了。这里讨论了三种衡量recall的方式：</p>
+<ol>
+<li>Recall versus IoU threshold: 固定proposal数量，根据不同的IoU标准来计算recall</li>
+<li>Recall versus number of proposal windows: 跟1互补，这里先固定IoU，根据不同的proposal数目来计算recall</li>
+<li>Average recall(AR): 作者提出的，这里只是根据不同的proposal数目，计算IoU在0.5到1之间Recall。</li>
+</ol>
+<p>数据集方面，作者在PASCAL VOC07和ImagNet Detection dataset上面做了测试。<br>这里又有不少图，这里只贴一张AP的，其他请参考原论文咯。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150519112811.png" alt=""><br>还是直接上结论</p>
+<ul>
+<li>MCG， EdgeBox，SelectiveSearch, Rigor和Geodesic在不同proposal数目下表现都不错</li>
+<li>如果只限制小于1000的proposal，MCG,endres和CPMC效果最好</li>
+<li>如果一开始没有较好地定位好候选框的位置，随着IoU标准严格，recall会下降比较快的包括了Bing, Rahtu, Objectness和Edgeboxes。其中Bing下降尤为明显。</li>
+<li>在AR这个标准下，MCG表现稳定；Endres和Edgeboxes在较少proposal时候表现比较好，当允许有较多的proposal时候，Rigor和SelectiveSearch的表现会比其他要好。</li>
+<li>PASCAL和ImageNet上，各个OP方法都是比较相似的，这说明了这些OP方法的泛化性能都不错。</li>
+</ul>
+<h2 id="各种OP方法在实际做detection任务时候的效果">各种OP方法在实际做detection任务时候的效果</h2><p>这里作者在OP之后接上了两种在detection上很出名的detector来进行测试，一个是文献[54]的LM-LLDA（一个DPM变种），另外一个自然是R-CNN了，值得注意的是，这两个detector的作者都是rbg。。。真大神也。。。<br>这里用了各种OP方法提取了1k个proposal，之后作比较。<br>也是直接给作者结论：</p>
+<ul>
+<li>如果OP方法定位越准确，那么对分类器帮助会越大，因为定位越准确，分类器返回的分数会越高：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150519140548.png" alt=""></li>
+<li>在LM-LLDA和R-CNN下，使得mAP最高的前5个OP方法都是MCG,SeletiveSearch,EdgeBoxes,Rigor和Geodesic。<br>分数一览如下图。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150519134819.png" alt=""></li>
+<li>通过分析，作者发现AR和mAP有着很强的相关性：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150519134830.png" alt=""></li>
+<li>作者用AR作为指导去tuning EdgeBoxes的参数，然后取得了更好的mAP（提高1.7个点）<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150519134857.png" alt=""></li>
+</ul>
+<h2 id="全文的总结和讨论">全文的总结和讨论</h2><p>总结：</p>
+<ol>
+<li>对于repeatability这个标准，目前的OP方法效果都一般。可能通过对噪声和扰动更加鲁棒的特征能够提高OP方法的repeatablilty。但是repeatability低不代表最后mAP就低，比如SelectiveSearch，所以最后还是看要应用场景。</li>
+<li>如果OP方法定位越准确，那么对分类器帮助会越大。所以对于OP方法来说，IoU为0.5的recall不是一个好的标准。高recall但是定位不准确，会伤害到最后的mAP</li>
+<li>MCG,SeletiveSearch,EdgeBoxes,Rigor和Geodesic是目前表现最好的5个方法，其中速度以EdgeBoxes和Geodesic为优。</li>
+<li>目前的OP方法在VOC07和ImageNet的表现都差不多，说明它们都有着不错的泛化性能。</li>
+</ol>
+<p>讨论：</p>
+<ol>
+<li>如果计算能力上去了，OP还有用吗？作者认为如果运算性能允许的话，滑动窗口加上CNN等强分类器会有着更好的效果。</li>
+<li>作者观察到在目前OP中使用的特征（比如object boundary和superpixel），不会在分类器中使用；然后OP方法中除了MultiBox之外就没有其他OP有使用CNN特征。作者期待会有工作能够结合下这两者的优势。</li>
+<li>最后，作者对做了三点猜测：之后top down可能会在OP中起到更加重要的作用；以后OP和detector的联系会更加紧密；OP生成的segmentation mask会起到更加重要的作用。</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[一篇关于object proposal的综述，将proposal的方法进行了回顾，分类和比较。]]>
+    
+    </summary>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+      <category term="Object Proposal" scheme="http://zhangliliang.com/tags/Object-Proposal/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记 《Object detection via a multi-region & semantic segmentation-aware CNN model》]]></title>
+    <link href="http://zhangliliang.com/2015/05/17/paper-note-ms-cnn/"/>
+    <id>http://zhangliliang.com/2015/05/17/paper-note-ms-cnn/</id>
+    <published>2015-05-17T07:10:13.000Z</published>
+    <updated>2015-05-17T08:46:15.000Z</updated>
+    <content type="html"><![CDATA[<p>论文出处：<a href="http://arxiv.org/abs/1505.01749" target="_blank" rel="external">http://arxiv.org/abs/1505.01749</a></p>
+<h2 id="写在前面">写在前面</h2><p>今天连看了Fast RCNN和这一篇，一开始以为这篇会是Fast RCNN的加强版。看了之后发现不是，这篇提出的框架更像是SPP-Net的加强版，因为这篇并没有实现joint training，不同的步骤还是分开来跑的。不禁让人想，如果能够结合这篇和Fast RCNN的所有技巧，VOC07的mAP会不会上80%了啊。。Detection进步确实太快了。<br>闲话少说，下面进入正题。:)</p>
+<h2 id="motivation">motivation</h2><p>对于某个region proposal来说，如何抽取比较好的特征？是否需要context辅助？是否需要考虑遮挡问题？<br>上述就是作者的motivation，如Figure 1，子图1的羊需要context，子图2的船不要context，子图3的车需要考虑遮挡问题。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150517151916.png" alt=""><br>所以该paper的核心研究内容是，如何更好地localize一个object，并抽取好的特征。<br>作者做了三件事：</p>
+<ol>
+<li>提出一个multi-region CNN 来增强特征</li>
+<li>提出一个semantic segmentation-aware CNN再进一步增强特征</li>
+<li>提出一个CNN-based regression方法，另外还提出2个tricks来refine最后的定位。</li>
+</ol>
+<p>下面分开一点一点说。</p>
+<h2 id="Multi-region_CNN">Multi-region CNN</h2><p>Figure 2所示便是Multi-region CNN（简称为MR-CNN）在single scale下的给某个object proposal提取特征的过程，用AlexNet举例，提取一个proposal的步骤是</p>
+<ol>
+<li>用前5个卷积层提取到全图的在conv5时候的feature map</li>
+<li>对于某个object proposal，将观察范围做一定的形变和修改得到不同的region，比如图中出来4个不同的region。</li>
+<li>将region投影到conv5 feature map上，crop出来对应的区域，然后用一个单层的SPP layer下采样到同样的大小</li>
+<li>然后各自经过两个全连接层进一步提取特征</li>
+<li>最后所有特征连在一起得到一个长特征。</li>
+</ol>
+<p>可以看出，跟SPP提取proposal特征的过程很像，多出来是第2步，也就是这里的主要贡献点。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150517151924.png" alt=""><br>作者一共提出了4种共10个region：</p>
+<ol>
+<li>原始的region，就是原来的那个object proposal的位置，对应Figure的中a</li>
+<li>截半，对应Figure3的b-e</li>
+<li>中心区域，对应g和h</li>
+<li>边界区域，对应i和j<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150517160709.png" alt=""><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150517160717.png" alt=""><br>作者认为这样multi region的好处有两个</li>
+<li>不同的region是focus在不同的物体区域的，所以他们应该是互补的，能够增强特征的多样性</li>
+<li>认为这个方法能够有效应对object proposal时候定位不准确的问题，并在6.2和6.3通过实验验证</li>
+</ol>
+<h2 id="Sematic_segmentation-aware_CNN">Sematic segmentation-aware CNN</h2><p>这里的motivation是通过segmentation的特征来辅助detection。然后这里训练segmention用的是很出名的FCN的流程了，不过这里不需要用segmentation的标注，而是用bbox就好了，<strong>简单粗暴地把bbox里面认为是前景，外面认为是背景即可</strong>（也就是如Figure 5的中间一列）。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150517151940.png" alt=""><br>就这样训练，出来的结果还不错。笔者并不惊讶，因为笔者也做过类似的实验^_^。虽然表面看似这样的标注很粗暴，很多像素都会错标，但是CNN的纠错能力是很强的，就是将那些标错的pixel都看成是噪声，CNN依然能够根据更多的标对的像素来学习出来一个还不错的模型（如Figure 5的右列）。<br>用上述的方法训练出来一个还不错的segmentation CNN后，摘到最后一层，也加到上面的MR-CNN上，进一步增强特征。如Figure 4所示。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150517151947.png" alt=""></p>
+<h2 id="Object_localization">Object localization</h2><p>这一步，对应的是RCNN或者SPP-Net的最后一步，也就是得到结果之后，对位置重新进行一次regression，不过这里做了几点的改进：</p>
+<ol>
+<li>使用CNN来训练regressor（在RCNN中是使用简单的函数来训练regressor的），具体来说跟Fast RCNN比较像啦，输出是4xC个值，其中C是类别个数，不过这里直接用L2 loss拟合完事。</li>
+<li>迭代优化，跟DeepFace比较像，也就是，利用分类器打一个分，然后筛掉低分的，对于剩下的高分的proposal重新回归位置，之后根据这个重新回归的位置再利用分类器打个分，然后再回归一次位置。</li>
+<li>投票机制，上述两步会在每个object附近都产生不少bbox，这里利用上附近的bbox进行投票打分，具体来说，取一个最高分的bbox，然后还有它附近跟他overlap超过0.5的bbox，然后最后的bbox位置是他们的加权平均（权值为overlap）。</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[从某个层面上，可以理解成SPP-Net的另外一个加强版，通过增加特征的多样性和最后对bbox regression做了改进来提升效果，自此，VOC07的mAP被提升到75%.]]>
+    
+    </summary>
+    
+      <category term="CNN" scheme="http://zhangliliang.com/tags/CNN/"/>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记 《Fast R-CNN》]]></title>
+    <link href="http://zhangliliang.com/2015/05/17/paper-note-fast-rcnn/"/>
+    <id>http://zhangliliang.com/2015/05/17/paper-note-fast-rcnn/</id>
+    <published>2015-05-17T01:33:38.000Z</published>
+    <updated>2015-05-17T07:13:56.000Z</updated>
+    <content type="html"><![CDATA[<p>论文出处见：<a href="http://arxiv.org/abs/1504.08083" target="_blank" rel="external">http://arxiv.org/abs/1504.08083</a><br>项目见：<a href="https://github.com/rbgirshick/fast-rcnn" target="_blank" rel="external">https://github.com/rbgirshick/fast-rcnn</a></p>
+<p>R-CNN的进化版，0.3s一张图片，VOC07有70的mAP，可谓又快又强。<br>而且rbg的代码一般写得很好看，应该会是个很值得学习的项目。</p>
+<h2 id="动机">动机</h2><p>为何有了R-CNN和SPP-Net之后还要提出Fast RCNN（简称FRCN）？因为前者有三个缺点</p>
+<ul>
+<li>训练的时候，pipeline是隔离的，先提proposal，然后CNN提取特征，之后用SVM分类器，最后再做bbox regression。FRCN实现了end-to-end的joint training(提proposal阶段除外)。</li>
+<li>训练时间和空间开销大。RCNN中ROI-centric的运算开销大，所以FRCN用了image-centric的训练方式来通过卷积的share特性来降低运算开销；RCNN提取特征给SVM训练时候需要中间要大量的磁盘空间存放特征，FRCN去掉了SVM这一步，所有的特征都暂存在显存中，就不需要额外的磁盘空间了。</li>
+<li>测试时间开销大。依然是因为ROI-centric的原因，这点SPP-Net已经改进，然后FRCN进一步通过single scale testing和SVD分解全连接来提速。</li>
+</ul>
+<h2 id="整体框架">整体框架</h2><p>整体框架如Figure 1，如果以AlexNet（5个卷积和3个全连接）为例，大致的训练过程可以理解为：</p>
+<ol>
+<li>selective search在一张图片中得到约2k个object proposal(这里称为RoI)</li>
+<li>缩放图片的scale得到图片金字塔，FP得到conv5的特征金字塔。</li>
+<li>对于每个scale的每个ROI，求取映射关系，在conv5中crop出对应的patch。并用一个单层的SPP layer（这里称为Rol pooling layer）来统一到一样的尺度（对于AlexNet是6x6）。</li>
+<li>继续经过两个全连接得到特征，这特征有分别share到两个新的全连接，连接上两个优化目标。第一个优化目标是分类，使用softmax，第二个优化目标是bbox regression，使用了一个smooth的L1-loss.</li>
+</ol>
+<p>除了1，上面的2-4是joint training的。<br>测试时候，在4之后做一个NMS即可。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150517103126.png" alt=""></p>
+<p>整体框架大致如上述所示了，对比回来SPP-Net，可以看出<strong>FRCN大致就是一个joint training版本的SPP-Net</strong>，改进如下：</p>
+<ol>
+<li>SPP-Net在实现上无法同时tuning在SPP layer两边的卷积层和全连接层。</li>
+<li>SPP-Net后面的需要将第二层FC的特征放到硬盘上训练SVM，之后再额外训练bbox regressor。</li>
+</ol>
+<p>接下来会介绍FRCN里面的一些细节的motivation和效果。</p>
+<h2 id="Rol_pooling_layer">Rol pooling layer</h2><p>Rol pooling layer的作用主要有两个，一个是将image中的rol定位到feature map中对应patch，另一个是用一个单层的SPP layer将这个feature map patch下采样为大小固定的feature再传入全连接层。<br>这里有几个细节。</p>
+<ol>
+<li>对于某个rol，怎么求取对应的feature map patch？这个论文没有提及，笔者也还没有仔细去抠，觉得这个问题可以到代码中寻找。:)</li>
+<li>为何只是一层的SPP layer？多层的SPP layer不会更好吗？对于这个问题，笔者认为是因为需要读取pretrain model来finetuning的原因，比如VGG就release了一个19层的model，如果是使用多层的SPP layer就不能够直接使用这个model的parameters，而需要重新训练了。</li>
+</ol>
+<h2 id="Multi-task_loss">Multi-task loss</h2><p>FRCN有两个loss，以下分别介绍。<br>对于分类loss，是一个N+1路的softmax输出，其中的N是类别个数，1是背景。为何不用SVM做分类器了？在5.4作者讨论了softmax效果比SVM好，因为它引入了类间竞争。（笔者觉得这个理由略牵强，估计还是实验效果验证了softmax的performance好吧 ^_^）<br>对于回归loss，是一个4xN路输出的regressor，也就是说对于每个类别都会训练一个单独的regressor的意思，比较有意思的是，这里regressor的loss不是L2的，而是一个平滑的L1，形式如下：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150517114340.png" alt=""><br>作者这样设置的目的是想让loss对于离群点更加鲁棒，控制梯度的量级使得训练时不容易跑飞。<br>最后在5.1的讨论中，作者说明了Multitask loss是有助于网络的performance的。</p>
+<h2 id="Scale_invariance">Scale invariance</h2><p>这里讨论object的scale问题，就是网络对于object的scale应该是要不敏感的。这里还是引用了SPP的方法，有两种。</p>
+<ol>
+<li>brute force （single scale），也就是简单认为object不需要预先resize到类似的scale再传入网络，直接将image定死为某种scale，直接输入网络来训练就好了，然后期望网络自己能够学习到scale-invariance的表达。</li>
+<li>image pyramids （multi scale），也就是要生成一个金字塔，然后对于object，在金字塔上找到一个大小比较接近227x227的投影版本，然后用这个版本去训练网络。</li>
+</ol>
+<p>可以看出，2应该比1更加好，作者也在5.2讨论了，2的表现确实比1好，但是好的不算太多，大概是1个mAP左右，但是时间要慢不少，所以作者实际采用的是第一个策略，也就是single scale。<br>这里，FRCN测试之所以比SPP快，很大原因是因为这里，因为SPP用了2，而FRCN用了1。</p>
+<h2 id="SVD_on_fc_layers">SVD on fc layers</h2><p>对应文中3.1，这段笔者没细看。大致意思是说全连接层耗时很多，如果能够简化全连接层的计算，那么能够提升速度。<br>具体来说，作者对全连接层的矩阵做了一个SVD分解，mAP几乎不怎么降（0.3%），但速度提速30%</p>
+<h2 id="Which_layers_to_finetune?">Which layers to finetune?</h2><p>对应文中4.5，作者的观察有2点</p>
+<ol>
+<li>对于较深的网络，比如VGG，卷积层和全连接层是否一起tuning有很大的差别（66.9 vs 61.4）</li>
+<li>有没有必要tuning所有的卷积层？答案是没有。如果留着浅层的卷积层不tuning，可以减少训练时间，而且mAP基本没有差别。</li>
+</ol>
+<h2 id="Data_augment">Data augment</h2><p>在训练期间，作者做过的唯一一个数据增量的方式是水平翻转。<br>作者也试过将VOC12的数据也作为拓展数据加入到finetune的数据中，结果VOC07的mAP从66.9到了70.0，说明对于网络来说，数据越多就是越好的。</p>
+<h2 id="Are_more_proposals_always_better？">Are more proposals always better？</h2><p>对应文章的5.5，答案是NO。<br>作者将proposal的方法粗略地分成了sparse（比如selective search）和dense（sliding windows）。<br>如Figure 3所示，不管是哪种方法，盲目增加proposal个数反而会损害到mAP的。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150517125419.png" alt=""><br>作者引用了文献11的一句话来说明：““[sparse proposals] may improve detection quality by reducing spurious false positives.”<br>然后笔者搜索了一下，发现<a href="http://www.robots.ox.ac.uk/~vgg/rg/papers/hosang_pami15.pdf" target="_blank" rel="external">文献11</a>被TPAMI15录取了，看来也是要看一下啊。。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[Fast R-CNN约等于一个可以end-to-end joint training的SPP-Net。]]>
+    
+    </summary>
+    
+      <category term="CNN" scheme="http://zhangliliang.com/tags/CNN/"/>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记《Multi-Objective Convolutional Learning for Face Labeling》]]></title>
+    <link href="http://zhangliliang.com/2015/05/12/paper-note-cnn-crf-face-labeling/"/>
+    <id>http://zhangliliang.com/2015/05/12/paper-note-cnn-crf-face-labeling/</id>
+    <published>2015-05-12T07:19:57.000Z</published>
+    <updated>2015-05-12T07:52:39.000Z</updated>
+    <content type="html"><![CDATA[<p>来源自，<a href="http://graduatestudents.ucmerced.edu/sliu32/pages/multi-objective-convolutional-learning-face-labeling" target="_blank" rel="external">http://graduatestudents.ucmerced.edu/sliu32/pages/multi-objective-convolutional-learning-face-labeling</a><br>CVPR15命中，而且作者是个美女。</p>
+<h2 id="动机">动机</h2><p>该文章解决的是face labeling的问题，如Figure 1，输入是原图(a)，想要得到的是结果图(d)，可以看成是semantic segmentation的一个子问题。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150512152507.png" alt=""></p>
+<h2 id="CNN+CRF">CNN+CRF</h2><p>我觉得本文最厉害的一点是将CRF的公式转化为了可以跟CNN联合求解的形式。下面会描述这个过程。<br>公式1中用CRF对问题建模，X是输入的原始图像，Y是输出的label map，$E_u$表示CRF的unary项，这里可以理解为X中的一个patch决定了Y中的某个点的输出；$E_b$是binary项，表示Y中两个点$y_i$和$y_j$的关系由他们在X中对应的overlapping patch来决定。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150512153118.png" alt=""><br>关键是对于上面的公式，怎么转化为一个CNN能够求解的形式。<br>对于unary项，很自然就能对应上可以将能量函数设为为softmax的形式。<br><strong>关键是对于binary项，可以通过引入一个额外的label $z_{ij}$来转化为一个二值问题，那么就可以用sigmoid来拟合了！</strong><br>明白这一点之后，CNN+CRF就比较顺理成章了。Figure 2给了示意图，作者将这两个loss都接到最后的FC上，联合训练。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150512152628.png" alt=""><br>最后在inferece的时候，需要将unary和binary得到的几张map做一个fusion，这一步用graphcut就好了：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150512154402.png" alt=""><br>笔者觉得就上面而言，已经是一个挺漂亮的工作了。但是这篇paper还没有完，下面还有增加prior，full image inference，upsampling等工作。</p>
+<h2 id="Nonparametric_prior">Nonparametric prior</h2><p>face labeling虽然是semantic segmentation的子问题，但是也有自己的一些prior，比如人脸是一个强结构性的object，所以可以先通过估计一个label的概率图来提供prior。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150512152637.png" alt=""></p>
+<h2 id="Full_image_inference">Full image inference</h2><p>跟FCN一样，也是将全连接层换成1x1的卷积核，考虑到这是FCN的同期工作，看来大家都想一块去了。</p>
+<h2 id="Upsampling">Upsampling</h2><p>这篇文章也考虑到upsampling的过程，不过用的是不同于FCN的方法。这里是通过pixel shift，最后拼接到一起来实现的。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150512152647.png" alt=""></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[做的问题是face labeling，可以看成semantic segmentation的一个特例。将CRF和CNN融合求解，并引入一个prior来进一步纠正错误。并且也考虑到了全图测试的FCN和upsampling等工程问题，个人觉得是个很赞的工作。]]>
+    
+    </summary>
+    
+      <category term="CNN" scheme="http://zhangliliang.com/tags/CNN/"/>
+    
+      <category term="CRF" scheme="http://zhangliliang.com/tags/CRF/"/>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记《Single Image Super-resolution using Deformable Patches》]]></title>
+    <link href="http://zhangliliang.com/2015/05/05/paper-note-sr-using-deformable-patches/"/>
+    <id>http://zhangliliang.com/2015/05/05/paper-note-sr-using-deformable-patches/</id>
+    <published>2015-05-05T12:42:19.000Z</published>
+    <updated>2015-05-05T13:37:02.000Z</updated>
+    <content type="html"><![CDATA[<p>是CVPR14的文章，项目地址见这里：<a href="https://sites.google.com/site/yuzhushome/single-image-super-resolution-using-deformable-patches" target="_blank" rel="external">https://sites.google.com/site/yuzhushome/single-image-super-resolution-using-deformable-patches</a></p>
+<h2 id="动机">动机</h2><p>首先，这篇文章做的是SR的问题。用的思路是exemplar based的合成方法，也就是对于一张输入的LR，先打散成很多的LR patch，对于每一个LR patch，在词典中找到最为匹配的一个或者几个HR exemplar patch，然后加权得到对应的合成HR patch。最后这些HR patch再拼合到一起就是最后的HR输出。<br>这篇文章的motivation如图1，黑框的是一个LR patch，如上述，一般的流程是在词典中找到最相似的HR patch即可，而这篇文章的改进主要在于在寻找HR patch这一步提出了一个deformable的概念，也就是认为可以通过对词典中的HR patch进行一定程度的形变，产生新的HR patch，而且这个HR patch更加适配于LR patch，从而得到更好的合成效果。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150505210041.png" alt=""></p>
+<h2 id="流程">流程</h2><p>文章的整体流程如下图，首先，也是需要维护一个HR的词典，该词典通过trainset产生。对于来的一个LR图片，打散成很多的LR patch，对于每个LR patch，首先在词典中匹配到比较合适的HR patch作为合成的候选，然后求出deformable field进行形变，之后这些候选通过加权合成得到该LR patch对应的HR patch结果，最后所有的HR patch拼合成最后的HR结果。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150505210048.png" alt=""><br>这里会有几个问题：</p>
+<ol>
+<li>怎么在dictionary中找到最合适的HR patch？</li>
+<li>怎么对HR patch进行deformation得到更加匹配的HR patch？</li>
+<li>最后加权合成时候的权值是怎么算的？</li>
+</ol>
+<p>在这三个问题里面，笔者关心的是第2个问题，于是下面只对第二个部分进行记录，其他部分参看原文了。<br>首先需要对SR问题进行建模，这里用经典的SR模型即可。X是HR，Y是LR，D是下采样矩阵，H是模糊矩阵，n是噪声：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150505211956.png" alt=""><br>然后就是定义deformation了，在公式2中，$B_h$是还没有形变前的HR，$B_r$是形变之后的HR。这里假设有两种形变，一个是空间上的变换$\phi$，另外一个是灰度上的线性变换$\alpha$和$\beta$<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150505212006.png" alt=""><br>对于$\phi$又可以用x和y方向上的deformation field来表示，分别用u和v表示：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150505212012.png" alt=""><br>然后假设deformation field的值比较小，那么就可以将上面公式转化成：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150505212025.png" alt=""><br>这之后就是通过设计能量函数来求解这个$\phi$了：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150505212035.png" alt=""><br>从上式可以看出能量函数有两个部分，第一个部分是想约束得到的$B_r$经过模糊下采样后跟LR patch$P_l$保持一致性，第二部分的$\psi$是某种prior，用来做正则项的：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150505212042.png" alt=""><br>这里的正则项被称为smoothness prior和slowness prior。作者说他是从光流法得到的灵感，而且上述求解过程也是类似的光流法的形式。</p>
+<p>（待续，总的来说笔者对这篇文章的公式还需要理解一下，先记录到这里，之后补上）</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[通过对patch做一个小形变，产生新的更加匹配与LR的新的HR patch，相当于拓展了词典，最后提高了SR的效果]]>
+    
+    </summary>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+      <category term="Image Processing" scheme="http://zhangliliang.com/tags/Image-Processing/"/>
+    
+      <category term="Low Level" scheme="http://zhangliliang.com/tags/Low-Level/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记 《Image Quality Assessment:From Error Visibility to Structural Similarity》]]></title>
+    <link href="http://zhangliliang.com/2015/04/29/paper-note-ssim/"/>
+    <id>http://zhangliliang.com/2015/04/29/paper-note-ssim/</id>
+    <published>2015-04-29T12:04:30.000Z</published>
+    <updated>2015-05-17T16:21:59.000Z</updated>
+    <content type="html"><![CDATA[<p>这里主要是说一个计算图片的质量评估函数，叫SSIM，即Structure Similarity，在TIP04时候发表的工作，至今引用量超过9k，可见影响深远。出处是：<a href="http://ece.uwaterloo.ca/~z70wang/publications/ssim.pdf" target="_blank" rel="external">http://ece.uwaterloo.ca/~z70wang/publications/ssim.pdf</a><br>目前仅记录SSIM的计算公式，后续如果需要再深入推敲一下。</p>
+<h2 id="引入">引入</h2><p>首先还是要简单引入一下SSIM，它是一个图片质量的评估函数。<br>在它之前比较常见的评估函数是MSE(或者PSNR，本质上跟MSE就差了一个倒数加缩放因子)，作者将这一类评估方法称为quality assessment system based on error sensitivity，认为这种函数忽略了人类视觉系统的一些属性，所以是不准确的。<br>作者认为人类视觉系统更加看重与图片的结构信息（… the assumption that the human visual system is highly adapted to extract structural information from the viewing field.），于是就提出了基于结构相似度的图像评估方法，也就是SSIM了。</p>
+<h2 id="公式">公式</h2><p>作者给出了一个图表说明SSIM的计算过程，不得不赞一下这个图做得相当漂亮。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150429201314.png" alt=""><br>从上图可以看出，SSIM的计算需要综合三个component，即luminance,constact和structure，所以总体的SSIM公式可以写成：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150429201326.png" alt=""><br>需要注意上述公式是对图片中的一个小patch进行求取的，作者认为这样能够减少variance，提高准确率。<br>然后对于每个component进行解释。</p>
+<ul>
+<li>对于luminance，对比的主体是patch的均值</li>
+<li>对于constract，对比的主体是patch的标准差</li>
+<li>对于structure，对比的主体是patch的归一化结果（也就是减去均值然后除以方差）</li>
+</ul>
+<p>然后，又考虑到几个因素，比如对偶性和有界性后，最后设定了一些超参数，得到SSIM的公式为：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150429202222.png" alt=""></p>
+<p>最后，对于图片每个patch都求得一个SSIM，最后平均一下得到的MSSIM就是针对全图的分数了。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150429202231.png" alt=""></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[简单记录SSIM的计算方法]]>
+    
+    </summary>
+    
+      <category term="Image Processing" scheme="http://zhangliliang.com/tags/Image-Processing/"/>
+    
+      <category term="Low Level" scheme="http://zhangliliang.com/tags/Low-Level/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记 《Semantics-driven portrait cartoon stylization》]]></title>
+    <link href="http://zhangliliang.com/2015/04/28/paper-note-sematic-driven-portrait-cartoon-stylization/"/>
+    <id>http://zhangliliang.com/2015/04/28/paper-note-sematic-driven-portrait-cartoon-stylization/</id>
+    <published>2015-04-28T03:02:30.000Z</published>
+    <updated>2015-04-28T04:05:44.000Z</updated>
+    <content type="html"><![CDATA[<p>是某个实验室前辈ICIP10的oral paper，连接见这里：<a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=5651715" target="_blank" rel="external">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=5651715</a></p>
+<h2 id="流程">流程</h2><p><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150428111301.png" alt=""><br>如上图，首先用AOG对Emma进行parsing，之后分别用一个edge detector得到Region和sketch的map，之后用他们作为引导图，对原图进行风格化，最后两个分支做一个fusion。</p>
+<h2 id="Sematic_Parsing_via_AOG">Sematic Parsing via AOG</h2><p><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150428113648.png" alt=""><br>这部分是对Emma进行parsing，And Or Graph(AOG)的大致思想是包括了And和Or两种节点。And节点的意思是脸由眼睛And鼻子等7个part组成，Or节点的意思是眼睛可以是大眼or小眼。AOG需要预先定义。<br>这一步结束后，Emma的脸的各个component有了，每个component可以用一个二元组表示$v_i =&lt; Λ_i, l_i &gt;$，表示位置和范围。</p>
+<h2 id="Region_and_Sketch_Saliency_via_Long-Edge_Detector">Region and Sketch Saliency via Long-Edge Detector</h2><p>之后对于原图用long-edge detector，得到了两张map，然后又对这两张map进行处理，就得到了region salmap和sketch salmap，前者的重点是component的细节特征，后者的重点是边缘信息（用于最后描黑边，这里的sketch所指就是这些黑边）<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150428113824.png" alt=""><br>上图的a和b表示两张salmap，c和d是用他们作为引导图对原图滤波之后的结果。怎么滤波见下一个小节。</p>
+<h2 id="Stylization">Stylization</h2><p>这里可以理解成分别用上面两张salmap作为引导图进行滤波，滤波要求满足，</p>
+<ol>
+<li>结果图像比起原图不能有太剧烈的变化（或者轮廓上不能有太剧烈的变化，相当于正则项）</li>
+<li>结果图像和引导图的梯度要相近或相关。</li>
+</ol>
+<p>所以objective function都可以理解成是两个part组成。<br>region的objective：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150428113834.png" alt=""><br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150428113838.png" alt=""><br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150428113844.png" alt=""></p>
+<p>sketch的objective：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150428113854.png" alt=""></p>
+<p>注意到，这里的objective都利用到了一开始parsing出来的component的信息，对于每个component，他们的权重等参数是不同的，需要人为设置<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150428115959.png" alt=""></p>
+<h2 id="Result">Result</h2><p>最后将sketch的滤波结果盖在region的结果上。就是最后的结果了。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150428113903.png" alt=""></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[两步走，先用AOG来parsing一张肖像图的各个component，之后对于每个component单独设置渲染的映射，最后求取一个全局的优化解。]]>
+    
+    </summary>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+      <category term="Image Processing" scheme="http://zhangliliang.com/tags/Image-Processing/"/>
+    
+      <category term="Low Level" scheme="http://zhangliliang.com/tags/Low-Level/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[关于仿射变换]]></title>
+    <link href="http://zhangliliang.com/2015/03/10/about-affine-transform/"/>
+    <id>http://zhangliliang.com/2015/03/10/about-affine-transform/</id>
+    <published>2015-03-10T02:32:15.000Z</published>
+    <updated>2015-03-10T08:01:58.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="20150310">20150310</h2><p>先看了仿射变换的<a href="http://zh.wikipedia.org/zh/%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2" target="_blank" rel="external">wiki</a><br>即仿射=线性变换（矩阵A）+平移（向量b），这里的线性变换就可以包括了旋转和缩放了。<br><img src="http://upload.wikimedia.org/math/4/9/d/49de1c94b75c4bd3fc3bbc7e08be33b3.png" alt=""><br>如果写成其次的方式是，也就是可以将线性变换和平移都统一到一个矩阵中，称为仿射矩阵：<br><img src="http://upload.wikimedia.org/math/6/5/5/65510671c4bff125774c5d3fa856c0e2.png" alt=""><br>或者<br><img src="http://www.mcudiy.cn/attachment/Mon_1407/33_8_c43f1f2156d6b3f.jpg?17" alt=""></p>
+<p>那么知道基础概念后，就可以应用了得到关键点之后的图片对齐了。opencv提供了一个比较详细的<a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/imgtrans/warp_affine/warp_affine.html" target="_blank" rel="external">样例</a><br>从前面的描述我们可以知道：</p>
+<ul>
+<li>如果有了原图和仿射矩阵，那么直接用公式就能够得到原图中每一点在仿射之后空间的坐标，那么就得到了输出图像。</li>
+<li>如果只有原图而还不知道仿射矩阵，这时候需要知道原图中至少3个点在仿射后的图像的位置，然后通过这个三个点来求得仿射矩阵。（如果大于3个点，那么就是拟合出一个相对最优的仿射矩阵）</li>
+</ul>
+<p>几个opencv里面用到的相关函数：</p>
+<ol>
+<li>Mat getAffineTransform(const Point2f src[], const Point2f dst[])，传入3对相互对应的点，返回仿射矩阵。</li>
+<li>void warpAffine(InputArray src, OutputArray dst, InputArray M, Size dsize, int flags=INTER_LINEAR, int borderMode=BORDER_CONSTANT, const Scalar&amp; borderValue=Scalar()) 传入原图和仿射矩阵，得到输出后的图像</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[记录个人学习仿射变换过程中用到的概念和相关知识]]>
+    
+    </summary>
+    
+      <category term="Image Processing" scheme="http://zhangliliang.com/tags/Image-Processing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记 《Real-Time Exemplar-Based Face Sketch Synthesis》]]></title>
+    <link href="http://zhangliliang.com/2015/03/06/paper-note-real-time-exemplar-based-face-sketch-synthesis/"/>
+    <id>http://zhangliliang.com/2015/03/06/paper-note-real-time-exemplar-based-face-sketch-synthesis/</id>
+    <published>2015-03-06T15:41:23.000Z</published>
+    <updated>2015-03-07T02:23:12.000Z</updated>
+    <content type="html"><![CDATA[<p>项目地址：<a href="http://www.cs.cityu.edu.hk/~yibisong/eccv14/index.html" target="_blank" rel="external">http://www.cs.cityu.edu.hk/~yibisong/eccv14/index.html</a><br>是ECCV14的文章。<br><strong>作者的PPT做的很棒，超级直观，很值得学习。</strong></p>
+<h2 id="文章SSD方法陈述">文章SSD方法陈述</h2><p>直接用PPT的截图来介绍本文章。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/幻灯片2.JPG" alt=""><br>Face Sketch Synthesis是这样一个问题，给出人物的photo（上图左边），想办法合成它对应的sketch（上图右边）。这个问题在刑侦和娱乐方面都很有用。</p>
+<p>下面3页介绍LLE（原文引用文献[13]）的思想。它是一个Exemplar based的方法，也就是需要一个额外的training data（photo-sketch对）来支持该方法。大概意思可以这样描述：</p>
+<ol>
+<li>来了一张待合成的photo，对于这个photo的每一个点p，以它为中心截一个小patch（图中小黑窗），在training data中的photo用KNN的方法找到最相似的K个patch。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/幻灯片3.JPG" alt=""></li>
+<li>并用这K个patch重构这个p对应的photo patch，找到重构系数。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/幻灯片4.JPG" alt=""></li>
+<li>然后这个重构系数能够映射到sketch中，也就是对应的K个sketch的中点的值用相同的重构系数组合后，就是p对应的sketch value。重复上述步骤直到生成了所有点的sketch value，组合起来就是一整张sketch。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/幻灯片5.JPG" alt=""></li>
+</ol>
+<p>然后上述的方法合成的结果不够完美，有很多噪点，<strong>很自然就想到用去噪的方式将噪点给去掉</strong>。不过，从结果看直接用现成的去噪方法效果提升并不大。比如下图中的NLM方法，它的假设是“<strong>如果图像中两个patch长得很像，那么patch的中心的那点也一定很像</strong>”，于是可以做这个一个过程，对于参考点p，截一个小patch，然后在附近找到外观相像的patch，越相像，就给予越大的权值w，最后p的值为这这些patch的中心的点的加权平均。如下图所示：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/幻灯片6.JPG" alt=""><br>作者认为去噪效果不好的原因是上面说的假设不成立，因为这里的patch是合成的，不够natural。所以估算出来的w就不准确啦。</p>
+<p>然后引入BM3D的思想，见下图gif超直观，它的假设是这样的，“<strong>图片中相似的块能够聚合成一组，同组内的图片块可以互相帮助来denosing</strong>”<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/cameraman_thr.gif" alt=""></p>
+<p>于是作者就用了这个思想咯，他将方法称为SSD，如下图，如果要计算p的值，那么其实可以用附近的点来帮助它，<strong>每个点都给出一个proposal</strong>。比如附近一个点q就能提供这样一个proposal，用的是q的最近邻的重构系数，加上之前NN估计出来的偏移，来估计p的值。然后r也能提供一个proposal，<strong>最后这些proposal求个平均就是p的值了</strong>。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/幻灯片8.JPG" alt=""></p>
+<p>最后一张图作者想说明，取领域大小对于算法效果不敏感，算法保留细节做得很好，比如眼睛的亮斑。不过其实也可以看出，取越多就越模糊了。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/幻灯片9.JPG" alt=""></p>
+<h2 id="本质上SSD和LLE的联系，前者是后者的补充">本质上SSD和LLE的联系，前者是后者的补充</h2><p>首先LLE是该文章的引用[13]，对应这篇<a href="http://mmlab.ie.cuhk.edu.hk/archive/2005/01467376.pdf" target="_blank" rel="external">论文</a>。它的实现方式跟上面的说的实际上有点差别，实际上，如果总结成三步，应该是：</p>
+<ol>
+<li>一样，对于测试图片的每一个p点，以它为中心截取patch，然后在training中找到K个最近邻的photo patch</li>
+<li>一样，用这最近邻的photo patch线性重构p点为中心的patch，得到重构系数。</li>
+<li><strong>不一样</strong>，找到用photo patch对应的sketch patch，然后在<strong>整个patch</strong>上根据重构系数组合得到新的sketch patch，这个<strong>sketch patch</strong>看成是p对应的photo patch的合成结果。</li>
+</ol>
+<p>差别用粗体标注出来了，只有第三步是不一样的，<strong>也就是LLE原始方法中最后得到的是一个patch的结果，而上文只取了这个patch的最中心的一点作为它的结果</strong>。</p>
+<p>本文提出的SSD方法本质上的步骤也可以写成三步，第一步和第二步是一样的，也是需要得到p的重构系数。<strong>其实第三步跟LLE也是一样的，即也是用相同的重构系数得到整个sketch patch</strong>。</p>
+<p>那么SSD跟LLE的差别是什么？是取patch的<strong>stride</strong>，LLE的stride&gt;1，SSD的stride=1。<br>也就是一般来说，LLE的patch之间的overlap比SSD要小，如下图：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150307095633.png" alt=""><br>可以看出LLE的patch之间的overlap还是比较小的，那么现在想象这个overlap一直变大，<strong>直到patch之间基本都要重叠在一起了，那么方法就是SSD</strong></p>
+<p>那么本质的区别来了。在上文最开始提到的方法中，由于只使用了patch的中心，所以就相当于<strong>完全没有平均</strong>；在LLE中，大部分的点都是没有overlap的，<strong>只有overlap部分的点有做平均</strong>；然后SSD中，大部分的点（除了边缘的点）都有overlap，<strong>所以基本全图上每个点都做了平均</strong>。</p>
+<p>所以得到文中最后的好结果也就可以解释了：</p>
+<ol>
+<li>去噪的本质，其实也是一种平均，所以SSD出来的效果就比较干净了。</li>
+<li>平均的副作用，就是会抑制掉边缘和高频细节，所以可以看成出来的sketch的比较“朦胧”，不够锐利。</li>
+<li>由于对齐得比较好，所以能够保留到眼睛的亮斑，而且亮斑本身不算高频信息，能够保留也很合理。（高频信息应该是头发，但总的来说，sketch本身就是由线段组成的，没有多少高频信息，所以这个方法用于做sketch相当合适）</li>
+</ol>
+<p>另外一个小缺点是基于合成方法都会有的合成错误：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150307101306.png" alt=""><br>比如上图这位女生的前额靠近中间的刘海就很难合成好，因为training set里面的图片对应的位置都是没有刘海的（大部分的发型都没有长刘海），所以找到的最近邻中也不会有刘海，基于它们合成出来的sketch也自然不会有刘海了。这个算是exemplar based方法对比与image based办法的一个缺点吧。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[一句话概括，用denoising的思想改进了LLE模型，但本质应该算是算是LLE模型的一种补充。其中最重要的假设是“图片中相似的块能够聚合成一组，同组内的图片块可以互相帮助来denosing”]]>
+    
+    </summary>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+      <category term="Low Level" scheme="http://zhangliliang.com/tags/Low-Level/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记 《Convolutional Neural Networks at Constrained Time Cost》]]></title>
+    <link href="http://zhangliliang.com/2015/03/05/paper-note-cnn-at-constrained-time-cost/"/>
+    <id>http://zhangliliang.com/2015/03/05/paper-note-cnn-at-constrained-time-cost/</id>
+    <published>2015-03-05T07:46:56.000Z</published>
+    <updated>2015-03-05T13:01:55.000Z</updated>
+    <content type="html"><![CDATA[<p>论文出处，<a href="http://arxiv.org/pdf/1412.1710v1" target="_blank" rel="external">http://arxiv.org/pdf/1412.1710v1</a><br>Kaiming He在CVPR15的工作。拜大神，一下子中了5篇。</p>
+<p>文章比较偏工程，讨论的是，如果限定了时间的总开销，那么depth，kernel size, layer width等因素那个是最重要的呢？最后作者的总结是<strong>depth最重要，kernel size和layer width不一定</strong>。</p>
+<p>本文是没有什么理论的，但设计实验比较有意思，做对照实验可以参考。</p>
+<p>于是文章总结起来只看Section 4的小标题和对应的结论即可：</p>
+<ul>
+<li>4.1. Trade-offs between Depth and Filter Sizes 答案是Depth重要</li>
+<li>4.2. Trade-offs between Depth and Width 答案是Depth重要</li>
+<li>4.3. Trade-offs between Width and Filter Sizes 答案是不知道哪个重要</li>
+<li>4.4. Is Deeper Always Better? 答案是，不是，deep到一定程度有反效果</li>
+<li>4.5. Adding a Pooling Layer 通过pooling来增加layer width，效果提升</li>
+<li>4.6. Delayed Subsampling of Pooling Layers 结论是Pooling不做down sample效果会好</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[一句话概括，deep是好的，如果是为了时间开销tradeoff，为了deep可以牺牲kernel size和layer width。不过太deep了也会起到反效果。]]>
+    
+    </summary>
+    
+      <category term="CNN" scheme="http://zhangliliang.com/tags/CNN/"/>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记 《Accurate Blur Models vs. Image Priors in Single Image Super-Resolution》]]></title>
+    <link href="http://zhangliliang.com/2015/02/23/paper-note-accurate-blur-models-help-super-resolution/"/>
+    <id>http://zhangliliang.com/2015/02/23/paper-note-accurate-blur-models-help-super-resolution/</id>
+    <published>2015-02-23T04:08:37.000Z</published>
+    <updated>2015-02-23T04:38:49.000Z</updated>
+    <content type="html"><![CDATA[<p>项目地址见这里：<a href="http://www.wisdom.weizmann.ac.il/~levina/papers/supres/" target="_blank" rel="external">http://www.wisdom.weizmann.ac.il/~levina/papers/supres/</a><br>是ICCV13的poster paper。<br>跟<a href="/2015/02/21/paper-note-nonparam-blind-super-resolution/">上一篇</a>说的那个ICCV13的oral paper的切入点很类似，都是针对模糊核函数。或者说，前者说完模糊核函数很重要，我们要找到一种方法来恢复这个核函数啊，后者就把这个事情做了(所以一篇是poster一篇是oral咯。。)</p>
+<p>这篇的思路很简单，提出了核函数很重要的说法，然后先通过实验效果验证了一下，之后再用公式推导从理论上论证。</p>
+<p>下面大致贴一下论文的图。</p>
+<p><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150223121814.png" alt=""><br>$K_T$表示在从HR得到LR时候的核函数，$K_A$表示将LR恢复回HR时候用得核函数。有三个观察结果：</p>
+<ol>
+<li>左上到右下的对角线是两个核函数相等，效果是最好的</li>
+<li>偏右上的三角部分，恢复时核函数比较宽，所以恢复出来的图像过于锐利。</li>
+<li>偏右下的三角部分，恢复时核函数比较窄，所以恢复出来的图像过于模糊。</li>
+</ol>
+<p>出现这个结果其实也蛮直观的，以上面第二点观察为例，如果模糊时候的函数比较窄（也就是模糊系数比较低的），但恢复时候的函数比较宽（也就是模糊系数比较高），那么就会过度恢复，所以就过于锐利了。而上面的第三点观察就刚好相反了。</p>
+<p>然后作者拿了一台相机拍照，并且通过工具估计出来它的PSF。之后做了实验，效果如下图：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150223121835.png" alt=""><br>PSF比bicubic的模糊效果要更强，于是用bicubic进行恢复时候就会恢复不足，显得模糊了。作者是想通过这个来说明，我们需要恢复的SR的kernel不是固定的，而应该是根据当时模糊的效果自适应地进行调整的。</p>
+<p><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150223121901.png" alt=""><br>最后这张图作者是想说kernel比prior要重要。看左边一溜的图就好。其中第二行和第三行都是用了最简单的prior，而三四五行用了的prior比较复杂，但是出来的效果是差不多的。所以就说明，找到了正确的核函数，prior影响就变小了。</p>
+<p>最后作者的结论是，核函数很重要啊，所以往后的工作应该要研究怎么得到核函数咯。然后，同年的一篇ICCV就讨论了一个思路，并且中了oral。（这算是一个悲伤的故事吗？）</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[一句话概括，对于SR问题，正确地找到模糊核函数很重要，对SR结果好坏影响比Priors要大。]]>
+    
+    </summary>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+      <category term="Low Level" scheme="http://zhangliliang.com/tags/Low-Level/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记 《Nonparametric Blind Super-Resolution》]]></title>
+    <link href="http://zhangliliang.com/2015/02/21/paper-note-nonparam-blind-super-resolution/"/>
+    <id>http://zhangliliang.com/2015/02/21/paper-note-nonparam-blind-super-resolution/</id>
+    <published>2015-02-21T03:09:02.000Z</published>
+    <updated>2015-02-21T03:35:06.000Z</updated>
+    <content type="html"><![CDATA[<p>论文项目：<a href="http://www.wisdom.weizmann.ac.il/~vision/BlindSR.html" target="_blank" rel="external">http://www.wisdom.weizmann.ac.il/~vision/BlindSR.html</a><br>ICCV13的oral，观看地址见：<a href="http://techtalks.tv/talks/nonparametric-blind-super-resolution/59401/" target="_blank" rel="external">http://techtalks.tv/talks/nonparametric-blind-super-resolution/59401/</a><br>目前引用量11。</p>
+<h2 id="问题引入">问题引入</h2><p>一般情况下，SR问题都是假设了blur kernel是PSF或者Guassian，但作者认为这是不正确的，作者提出了kernel应该从低分辨率图像中进行直接估计来进行恢复，然后再基于这个kernel来进行SR。</p>
+<h2 id="什么才是正确的SR_kernel？">什么才是正确的SR kernel？</h2><p>（注：这部分对应原文sect 2，中间的一些符号笔者没有理解，先将脉络记录下来先）<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150221111654.png" alt=""><br>如上图，作者认为图像原来是在一个contiunous scene f(x)下，不管是high-res image h[n]还是low-res image l[n]，都看成是f(x)的一种经过PSF模糊之后的采样，差别是它们的PSF是不同的。<br>而SR问题中需求得到的kernel，实际上应该是从h[n]到l[n]的模糊核函数，这个过程等价于先从h[n]反卷积到f(x)再卷积到l[n]，用傅里叶变换后在频域表示为：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150221112156.png" alt=""><br>总的来说，这个kernel不是PSF的离散化，而是具有更加震荡的模式。</p>
+<h2 id="怎么通过低分辨率图像直接恢复kernel？">怎么通过低分辨率图像直接恢复kernel？</h2><p><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150221112533.png" alt=""><br>经过公式推理，作者得到了这样一个观察。如上图所示，在低分辨率图像l中，首先将它进一步模糊降采样为l^alpha，并在这两个尺度下找到了一对最近邻的q和r^alpha，而r^alpha是在l中对应的r区域模糊降采样得到，那么q和r的关系也会满足与q是r的模糊降采样，该形式可以转换成一个线性的约束：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150221113019.png" alt=""><br>也就是，如果能够找到多个这样q-r对，能够通过最小二乘法估计得到kernel的值。<br>于是问题是如何得到这样的q-r对。方法也是很简单，先初始化一个k，然后通过k得到新的l^alpha，之后通过NN找到目前的q-r对，重新估计新的k。重复该步骤直到收敛。</p>
+<h2 id="引入外部图片时候的kernel恢复">引入外部图片时候的kernel恢复</h2><p>基本同上述过程，只不过这时候l^alpha是在外部图片中得到。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[一句话概括，对于SR问题，PSF和Guassian都不是“正确”的blur kernel。利用图像的自相似性，正确的kernel可以通过低分辨率图像进行估计得到。]]>
+    
+    </summary>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+      <category term="Low Level" scheme="http://zhangliliang.com/tags/Low-Level/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[论文笔记 《Super-Resolution from a Single Image》]]></title>
+    <link href="http://zhangliliang.com/2015/02/20/paper-note-super-resolution-for-single-image/"/>
+    <id>http://zhangliliang.com/2015/02/20/paper-note-super-resolution-for-single-image/</id>
+    <published>2015-02-20T04:21:01.000Z</published>
+    <updated>2015-02-20T05:43:39.000Z</updated>
+    <content type="html"><![CDATA[<p>项目地址见这里：<a href="http://www.wisdom.weizmann.ac.il/~vision/SingleImageSR.html" target="_blank" rel="external">http://www.wisdom.weizmann.ac.il/~vision/SingleImageSR.html</a><br>ICCV09的论文，目前引入有550+</p>
+<h2 id="简介">简介</h2><p>先简单说说什么是超分辨。<br>输入一张低分辨率图像，比如100x100，将其升高到到高分辨率，比如200x200，并且要求清晰度尽量不变。也就是输出结果比输入有着更多的信息，是一个ill-posed的问题，所以称为“超”分辨。<br>一开始超分辨问题一般是用<strong>多张</strong>的相似的低分辨图像恢复成单张高分辨率图像，后来发现了其局限性，提出了基于样例学习的方法，即通过产生多个“低分辨-高分辨”图像对并学习其中的对应关系。<br>该文章将上述两种方法称为“Classical SR”和“Example-based SR”，并提出一个框架将它们整合在一起，而且能够用于<strong>单张</strong>低分辨率图像到高分辨率图像的恢复。</p>
+<h2 id="核心">核心</h2><p><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150220122755.png" alt=""><br>见上图，作者发现了图像的自相似性：即在同一个张图片的多个尺度下，能够找到外观极其类似的图像块。例，在原图中，左上角子图中的红框是屋子的一扇窗户；而在低分辨率图像中，它跟屋子的门极其相似（左下角子图红框）。于是可以认为找到了一个“低分辨-高分辨”图像对，这样就能够利用相关信息进行恢复。</p>
+<h2 id="两种形式的恢复">两种形式的恢复</h2><p>先说第一种Classical SR。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150220124328.png" alt=""><br>上图(a)中代表的过程就就是Classical SR的过程，也就是利用多张低分辨图像的同样位置的patch来拟合高分辨率图像中的对应区域。<br>这里需要提到，从高分辨率到低分辨率的产生一般写成下面形式：</p>
+<blockquote>
+<p><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150220131320.png" alt=""><br>$j$是下标，忽略之<br>$H$是高分辨图像， $L$是低分辨图像<br>$B$是一个blurred filter，比如PSF或者Guassian<br>$↓$表示下采样（就是最原始的nearest，没有用bilinear或者bicubic的）</p>
+</blockquote>
+<p>所以对于低分辨率图片中的一点，可以找到高分辨率图片的一个patch进行对应（上图中的圆形，类似于CNN中的感受野的概念，下面也用感受野来表示这个patch），可以改写成一个线性的约束表达式：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150220131843.png" alt=""><br>当这些区域之间有重叠的时候，就可以通过联立方程求解了。<br>这个就是Classical SR的一般性求解过程，这里需要多张低分辨率图像。<br>加上该文章提出的自相似性，就可以只用单张的低分辨率图像了：对于低分辨图像中的每个patch，用NN找到相似的patch，然后映射会高分辨率的感受野，通过重叠部分来联立方程。（对应上图(b)）</p>
+<p>然后说第二种Example-based SR。<br>其实也直观，就是Classical SR是在同一个尺度下找相似的，而Example-based SR是在不同尺度下找相似的。<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/小Q截图-20150220132742.png" alt=""><br>简单描述过程，如上图，对于$I_0$图像中的深绿色小块，在它下两层的图像$I_{-2}$中找到了一个相似块，该块对应回去在$I_0$中对应的是浅绿色的一个“大块”。那么就认为在$I_0$中找到了一对example。然后直接将它复制到$I_2$的对应位置。<br>可以看出这里做了一个假设，就是认为example之间的对应关系不用学习，直接复制就可以。</p>
+<p>然后整体的框架也如上图所示，对于输入的一张低分辨图像$I_0$，结合Example-based和classical两种方法来恢复出高分辨率图像。<br>这里还有一个细节，就是作者使用了一种coarse to fine的思想，即对于高分辨率的图（图中的紫色部分），也就是先恢复$I_1$，然后对错误部分进行纠正（用back projected），然后继续恢复$I_2$，再纠正，直到恢复到$I_n$，也即是需要的高分辨率图$H$。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[一句话概括，通过最近邻的方法挖掘图像块的自相似性来进行图像的超分辨复原]]>
+    
+    </summary>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+      <category term="Low Level" scheme="http://zhangliliang.com/tags/Low-Level/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Caffe源码阅读（2） 卷积层]]></title>
+    <link href="http://zhangliliang.com/2015/02/11/about-caffe-code-convolutional-layer/"/>
+    <id>http://zhangliliang.com/2015/02/11/about-caffe-code-convolutional-layer/</id>
+    <published>2015-02-11T14:07:22.000Z</published>
+    <updated>2015-05-17T16:08:04.000Z</updated>
+    <content type="html"><![CDATA[<p>大约半年前写过一篇关于Caffe全连接层的<a href="/2014/09/15/about-caffe-code-full-connected-layer/">文章</a>，这次更新卷积层的。</p>
+<p>一开始笔者先看了卷积层的梯度传导公式，参考了这两篇：</p>
+<blockquote>
+<ol>
+<li><a href="http://ufldl.stanford.edu/tutorial/supervised/ConvolutionalNeuralNetwork/" target="_blank" rel="external">http://ufldl.stanford.edu/tutorial/supervised/ConvolutionalNeuralNetwork/</a></li>
+<li><a href="http://cogprints.org/5869/1/cnn_tutorial.pdf" target="_blank" rel="external">http://cogprints.org/5869/1/cnn_tutorial.pdf</a></li>
+</ol>
+</blockquote>
+<p>卷积层的参数的梯度可以这样来求：<br><span>$$\begin{align}
+  \nabla_{W_k^{(l)}} J(W,b;x,y) &= \sum_{i=1}^m (a_i^{(l)}) \ast \text{rot90}(\delta_k^{(l+1)},2), \\
+  \nabla_{b_k^{(l)}} J(W,b;x,y) &=  \sum_{a,b} (\delta_k^{(l+1)})_{a,b}.
+\end{align}$$</span><!-- Has MathJax --><br>看上去比全连接层复杂多了，但其实，<strong>他们本质上基本是一样的</strong>，依然可以套回全连接层的参数求导公式：<br><span>$$\begin{align}
+   \nabla_{W^{(l)}} J(W,b;x,y) &= \delta^{(l+1)} (a^{(l)})^T, \\
+   \nabla_{b^{(l)}} J(W,b;x,y) &= \delta^{(l+1)}.
+\end{align}$$</span><!-- Has MathJax --><br><strong>只需要额外增加一步<code>im2col</code></strong>。这一步的意思是将首先将整张图片按照卷积的窗口大小切好（按照stride来切，可以有重叠），然后各自拉成一列。<br>为啥要怎样做，因为对于这个小窗口内拉成一列的神经元来说来说，它们跟下一层神经元就是全连接了，所以这个小窗口里面的梯度计算就可以按照全连接来计算就可以了。</p>
+<p>如果对照着Caffe的<a href="https://github.com/BVLC/caffe/blob/master/src/caffe/layers/conv_layer.cpp" target="_blank" rel="external">卷积层源码</a>来看，就很清晰了。<br>forward的代码如下，假设没有分group，这段代码的意思是对于一个大小为num_的batch里面的任意一张图片，首先通过<code>im2col</code>展开成多个列向量，之后直接就用wx+b的方式就能够算到输出了。<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">void ConvolutionLayer&lt;Dtype&gt;::Forward_cpu(<span class="keyword">const</span> vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom,</span><br><span class="line">      vector&lt;Blob&lt;Dtype&gt;*&gt;* top) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; bottom.size(); ++i) &#123;</span><br><span class="line">    <span class="keyword">const</span> Dtype* bottom_data = bottom[i]-&gt;cpu_data();</span><br><span class="line">    Dtype* top_data = (*top)[i]-&gt;mutable_cpu_data();</span><br><span class="line">    Dtype* col_data = col_buffer_.mutable_cpu_data();</span><br><span class="line">    <span class="keyword">const</span> Dtype* weight = this-&gt;blobs_[<span class="number">0</span>]-&gt;cpu_data();</span><br><span class="line">    <span class="keyword">int</span> weight_offset = M_ * K_;  <span class="comment">// number of filter parameters in a group</span></span><br><span class="line">    <span class="keyword">int</span> col_offset = K_ * N_;  <span class="comment">// number of values in an input region / column</span></span><br><span class="line">    <span class="keyword">int</span> top_offset = M_ * N_;  <span class="comment">// number of values in an output region / column</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">0</span>; n &lt; num_; ++n) &#123;</span><br><span class="line">      <span class="comment">// im2col transformation: unroll input regions for filtering</span></span><br><span class="line">      <span class="comment">// into column matrix for multplication.</span></span><br><span class="line">      im2col_cpu(bottom_data + bottom[i]-&gt;offset(n), channels_, height_,</span><br><span class="line">          width_, kernel_h_, kernel_w_, pad_h_, pad_w_, stride_h_, stride_w_,</span><br><span class="line">          col_data);</span><br><span class="line">      <span class="comment">// Take inner products for groups.</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> g = <span class="number">0</span>; g &lt; group_; ++g) &#123;</span><br><span class="line">        caffe_cpu_gemm&lt;Dtype&gt;(CblasNoTrans, CblasNoTrans, M_, N_, K_,</span><br><span class="line">          (Dtype)<span class="number">1</span>., weight + weight_offset * g, col_data + col_offset * g,</span><br><span class="line">          (Dtype)<span class="number">0</span>., top_data + (*top)[i]-&gt;offset(n) + top_offset * g);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// Add bias.</span></span><br><span class="line">      <span class="keyword">if</span> (bias_term_) &#123;</span><br><span class="line">        caffe_cpu_gemm&lt;Dtype&gt;(CblasNoTrans, CblasNoTrans, num_output_,</span><br><span class="line">            N_, <span class="number">1</span>, (Dtype)<span class="number">1</span>., this-&gt;blobs_[<span class="number">1</span>]-&gt;cpu_data(),</span><br><span class="line">            bias_multiplier_.cpu_data(),</span><br><span class="line">            (Dtype)<span class="number">1</span>., top_data + (*top)[i]-&gt;offset(n));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>所以卷积看成是多个局部的全连接。笔者记得在某个地方看到过，实现卷积的方式有两个，一个是像caffe里面的im2col，另外一个是傅里叶变换。而后者的速度比较快，那么看来facebook给出的加速代码应该是用了傅里叶变换咯：)<br>言归正传，如果能够理解到<code>im2col</code>的作用，那么backward的代码也很容易理解了。<br>对于bias，直接就是delta(可能还要乘以<code>bias_multiplier_</code>，这个是Caffe自己的功能，默认不开启，即<code>bias_multiplier_=1</code>)<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Bias gradient, if necessary.</span></span><br><span class="line"><span class="keyword">if</span> <span class="comment">(bias_term_ &amp;&amp; this-&gt;param_propagate_down_[1])</span> &#123;</span><br><span class="line">  top_diff = top[i]-&gt;cpu_diff<span class="comment">()</span>;</span><br><span class="line">  for <span class="comment">(int n = 0; n &lt; num_; ++n)</span> &#123;</span><br><span class="line">	caffe_cpu_gemv&lt;Dtype&gt;<span class="comment">(CblasNoTrans, num_output_, N_,</span><br><span class="line">		1., top_diff + top[0]-&gt;offset(n)</span>,</span><br><span class="line">		bias_multiplier_.cpu_data<span class="comment">()</span>, <span class="number">1.</span>,</span><br><span class="line">		bias_diff);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>对于weights，batch中的每张图片，首先还是用<code>im2col</code>展开，之后用矩阵乘法表示累加：<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Since we saved memory in the forward pass by not storing all col</span></span><br><span class="line"><span class="comment">// data, we will need to recompute them.</span></span><br><span class="line">im2col_cpu(bottom_data + (*bottom)[i]-&gt;offset(<span class="keyword">n</span>), channels_, height_,</span><br><span class="line">		   width_, kernel_h_, kernel_w_, pad_h_, pad_w_,</span><br><span class="line">		   stride_h_, stride_w_, col_data);</span><br><span class="line"><span class="comment">// gradient w.r.t. weight. Note that we will accumulate diffs.</span></span><br><span class="line"><span class="keyword">if</span> (this-&gt;param_propagate_down_[0]) &#123;</span><br><span class="line">  <span class="keyword">for</span> (int <span class="keyword">g</span> = 0; <span class="keyword">g</span> &lt; group_; ++<span class="keyword">g</span>) &#123;</span><br><span class="line">	caffe_cpu_gemm&lt;Dtype&gt;(CblasNoTrans, CblasTrans, M_, K_, N_,</span><br><span class="line">		(Dtype)1., top_diff + top[i]-&gt;offset(<span class="keyword">n</span>) + top_offset * <span class="keyword">g</span>,</span><br><span class="line">		col_data + col_offset * <span class="keyword">g</span>, (Dtype)1.,</span><br><span class="line">		weight_diff + weight_offset * <span class="keyword">g</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后是计算需要传回前一层的delta，也是先看成多个独立的全连接，但是最后需要还原成带有空间结构的形状，需要调用逆过程<code>col2im</code>，其实也是一个累加的过程，让每个空间位置的delta累加起来。<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gradient w.r.t. bottom data, if necessary.</span></span><br><span class="line"><span class="keyword">if</span> <span class="comment">(propagate_down[i])</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> <span class="comment">(weight == NULL)</span> &#123;</span><br><span class="line">	weight = this-&gt;blobs_[<span class="number">0</span>]-&gt;cpu_data<span class="comment">()</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  for <span class="comment">(int g = 0; g &lt; group_; ++g)</span> &#123;</span><br><span class="line">	caffe_cpu_gemm&lt;Dtype&gt;<span class="comment">(CblasTrans, CblasNoTrans, K_, N_, M_,</span><br><span class="line">		(Dtype)</span><span class="number">1.</span>, weight + weight_offset * g,</span><br><span class="line">		top_diff + top[i]-&gt;offset<span class="comment">(n)</span> + top_offset * g,</span><br><span class="line">		<span class="comment">(Dtype)</span><span class="number">0.</span>, col_diff + col_offset * g);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// col2im back to the data</span></span><br><span class="line">  col<span class="number">2</span>im_cpu<span class="comment">(col_diff, channels_, height_, width_,</span><br><span class="line">	  kernel_h_, kernel_w_, pad_h_, pad_w_,</span><br><span class="line">	  stride_h_, stride_w_, bottom_diff + (*bottom)</span>[i]-&gt;offset<span class="comment">(n)</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后附带一提，在<a href="/2015/02/11/about-convolution/">“关于卷积”那篇</a>也提到了卷积运算是先要将kernel旋转180度之后再扫过去的。可以看出Caffe源码是没有这一步的，所以最后学出来的“kernel”实际上是应该还要旋转回来才是正确的卷积核。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[记录Caffe源码阅读过程的笔记，这篇是关于卷积层的]]>
+    
+    </summary>
+    
+      <category term="CNN" scheme="http://zhangliliang.com/tags/CNN/"/>
+    
+      <category term="tools" scheme="http://zhangliliang.com/tags/tools/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[关于卷积]]></title>
+    <link href="http://zhangliliang.com/2015/02/11/about-convolution/"/>
+    <id>http://zhangliliang.com/2015/02/11/about-convolution/</id>
+    <published>2015-02-11T01:52:08.000Z</published>
+    <updated>2015-02-17T03:38:25.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="20150211">20150211</h2><p>感觉从学习高数开始就没有搞明白过卷积究竟是干嘛的，google了一下有什么比较直观的理解方式，得到的大都与时域和信号有关（比如<a href="http://blog.sciencenet.cn/blog-287179-425373.html" target="_blank" rel="external">这篇</a>,<a href="http://www.zhihu.com/question/23336874" target="_blank" rel="external">这篇</a>），其实我想搞明白的是卷积跟图像处理的关系(<a href="http://www.zhihu.com/question/27251882" target="_blank" rel="external">这篇</a>提到一点)。先记录一些目前似懂非懂的内容。</p>
+<p>卷积 vs 互相关<br>从<a href="http://www.zhihu.com/question/20500497" target="_blank" rel="external">知乎一个帖子</a>拷贝过来的：两个函数，翻转其中一个，再滑动求积分，叫卷积（convultion）；不翻转就滑动求积分，叫做互相关（cross-correlation，有时候简写为correlation）。如果其中之一是偶函数，那么卷积和互相关效果相同。</p>
+<p><del>这里算的互相关在图像中就是很平常的滤波运算。</del>(这里说的有点歧义，因为也有convolution filter这个说法，filter如果翻译成滤波器的话，那么“滤波”具有更加广的含义，只要符合“过滤掉某种频率的波形”的作用的kernel应该都可以称为滤波器，不管它是卷积还是相关的)</p>
+<p>用matlab验证一下确实如此，互相关对应的是<code>filter2</code>，卷积对应的是<code>conv2</code>。（注意到matlab中还有<code>filter</code>和<code>conv</code>函数，应该是带2的是2维操作，不带2的是一维操作）<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span> <span class="number">2</span>;<span class="number">3</span> <span class="number">4</span>;<span class="number">5</span> <span class="number">6</span>];</span><br><span class="line">b = [<span class="number">1</span> <span class="number">2</span>;<span class="number">3</span> <span class="number">4</span>];</span><br><span class="line"><span class="preprocessor">%</span> 下面两个是等价的运算，其实filter<span class="number">2</span>函数是调用co<span class="label">nv2</span>函数来实现的</span><br><span class="line">filter<span class="number">2</span><span class="comment">(b, a, 'valid')</span>;</span><br><span class="line">co<span class="label">nv2</span><span class="comment">(a, rot90(b, 2)</span>, <span class="string">'valid'</span>); <span class="preprocessor">%</span>这里的rot<span class="number">90</span><span class="comment">(b, 2)</span>对应了“翻转”的操作，即旋转<span class="number">180</span>度</span><br></pre></td></tr></table></figure></p>
+<h2 id="20150216">20150216</h2><p>今天又查了一下卷积跟互相关的关系，从<a href="http://www.researchgate.net/post/Difference_between_convolution_and_correlation" target="_blank" rel="external">这里</a>得到一些有趣的信息。</p>
+<blockquote>
+<ol>
+<li>Correlation is measuring how similar two signals are to each other, and convolution is directly related to the impulse response</li>
+<li>Correlation is the degree of similarity between two different signals not convolution. Convolution is the product of two signals in frequency domain.</li>
+</ol>
+</blockquote>
+<p>上面第二点中提到卷积是信号在频域上的乘积（也就是<a href="http://en.wikipedia.org/wiki/Convolution_theorem" target="_blank" rel="external">卷积定理</a>），这里就涉及到了傅里叶变换了。知乎上有一篇文章做了比较直观的解释，也先记录在<a href="http://zhuanlan.zhihu.com/wille/19763358" target="_blank" rel="external">这里</a>，copy几个有意思的图：<br><img src="http://pic4.zhimg.com/4695ce06197677bab880cd55b6846f12_b.jpg" alt=""><br><img src="http://pic2.zhimg.com/974efc6a99e06dcd623193e960ccbe93_b.jpg" alt=""></p>
+<h2 id="20150217">20150217</h2><p>虽然看了一些资料，但是感觉一些疑问还是没有得到解决</p>
+<ol>
+<li>如果“卷积=旋转180度的相关运算”的说法成立，那么为何在图像说的一般的sobel算子等是卷积运算呢？</li>
+<li>在CNN中可视化卷积核有什么意义呢？就是看他长得像什么，就说是什么？感觉不太合理的样子。</li>
+</ol>
+<p>然后今天又看了一个跟问题1有关的帖子：<br><a href="http://dsp.stackexchange.com/questions/12684/difference-between-correlation-and-convolution-on-an-image" target="_blank" rel="external">http://dsp.stackexchange.com/questions/12684/difference-between-correlation-and-convolution-on-an-image</a><br>这里答主说为何要用卷积而不是相关，是因为卷积是频域上的乘积，是满足结合律的。所以，如果对于图像f，依次用g和h去卷的话，其实等价于用g和h卷出一个核，然后用这个核去卷f。如果按照这个说法，CNN其实也是可以这样卷的咯？如果先将不同的核都先结合起来，最后再去卷图像，这样运算效率会变高吗？<br>感觉问题反而是变多了，看来本人的基础不够扎实才是命门所在啊。。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[记录学习卷积过程中的零散知识]]>
+    
+    </summary>
+    
+      <category term="Image Processing" scheme="http://zhangliliang.com/tags/Image-Processing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[关于双线性插值]]></title>
+    <link href="http://zhangliliang.com/2015/02/09/about-biliear-interpolation/"/>
+    <id>http://zhangliliang.com/2015/02/09/about-biliear-interpolation/</id>
+    <published>2015-02-09T07:35:55.000Z</published>
+    <updated>2015-02-09T08:44:56.000Z</updated>
+    <content type="html"><![CDATA[<p>最近工作涉及到了插值算法，查了一下发现原来这东西如果抠细节的话并不简单，于是记录一下。这篇先记录的是双线性插值。</p>
+<h2 id="应用场景和基本原理">应用场景和基本原理</h2><p>简单来说就是，在对图像进行缩放的时候，对于未知像素可以采用插值进行求解。<a href="http://www.cambridgeincolour.com/tutorials/image-interpolation.htm" target="_blank" rel="external">这篇文章</a>写的比较清楚，这里就不再重复了。<br>双线性插值的原理可以描述为，将output image的点映射回input image的坐标系（映射回去的坐标可能为小数），并找出最近的四个在input image中像素点（它们的坐标一定为整数），然后加权平均得到它的像素值。看图的话会比较清晰：<br><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Bilinear_interpolation_visualisation.svg/220px-Bilinear_interpolation_visualisation.svg.png" alt=""><br>乍一看这个算法很直观，也无需专门写一篇文章来记录。但是这个直观的算法在实现的时候有一点是值得注意的，就是将output映射为input坐标系时候具体要怎么<strong>映射</strong>。查了一些文章，也有各种的实现方法，比如：</p>
+<blockquote>
+<ol>
+<li><a href="http://tech-algorithm.com/articles/bilinear-image-scaling/" target="_blank" rel="external">http://tech-algorithm.com/articles/bilinear-image-scaling/</a></li>
+<li><a href="http://stackoverflow.com/questions/26142288/resize-an-image-with-bilinear-interpolation-without-imresize" target="_blank" rel="external">http://stackoverflow.com/questions/26142288/resize-an-image-with-bilinear-interpolation-without-imresize</a></li>
+<li><a href="http://blog.sina.com.cn/s/blog_ab584cac0101h0xy.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_ab584cac0101h0xy.html</a></li>
+</ol>
+</blockquote>
+<p>感觉它们的实现方法并不一致，也不知道谁的实现方法比较靠谱。所以笔者决定看matlab的<code>imresize</code>是怎么实现的。</p>
+<h2 id="在matlab中的实现">在matlab中的实现</h2><p>在matlab中输入：<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">%</span> 生成一张简单的图片，并用双线性插值法放大到<span class="number">2</span>倍</span><br><span class="line">im = ui<span class="label">nt8</span><span class="comment">([8 16;16 32])</span>;</span><br><span class="line">imresize<span class="comment">(im, 2, 'bilinear')</span></span><br></pre></td></tr></table></figure></p>
+<p>返回结果会是：<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ans </span>=<span class="string"></span><br><span class="line"></span><br><span class="line">    8   10   14   16</span><br><span class="line">   10   13   18   20</span><br><span class="line">   14   18   25   28</span><br><span class="line">   16   20   28   32</span></span><br></pre></td></tr></table></figure></p>
+<p>现在分析这个结果是怎么得到的。所幸matlab是可以通过ctrl+D找到部分的源码实现方法的，于是笔者大致读了一下，结合网上一些资料终于把如何映射这个问题给解决了。<br>最主要的函数是imresize.m中的这个函数：<br><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[weights, indices]</span> = <span class="title">contributions</span><span class="params">(in_length, out_length, ...</span><br><span class="line">                                            scale, kernel, ...</span><br><span class="line">                                            kernel_width, antialiasing)</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (scale &lt; <span class="number">1</span>) &amp;&amp; (antialiasing)</span><br><span class="line">    <span class="comment">% Use a modified kernel to simultaneously interpolate and</span></span><br><span class="line">    <span class="comment">% antialias.</span></span><br><span class="line">    h = @(x) scale * kernel(scale * x);</span><br><span class="line">    kernel_width = kernel_width / scale;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="comment">% No antialiasing; use unmodified kernel.</span></span><br><span class="line">    h = kernel;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Output-space coordinates.</span></span><br><span class="line">x = (<span class="number">1</span>:out_length)<span class="operator">'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Input-space coordinates. Calculate the inverse mapping such that 0.5</span></span><br><span class="line"><span class="comment">% in output space maps to 0.5 in input space, and 0.5+scale in output</span></span><br><span class="line"><span class="comment">% space maps to 1.5 in input space.</span></span><br><span class="line">u = x/scale + <span class="number">0.5</span> * (<span class="number">1</span> - <span class="number">1</span>/scale);</span><br><span class="line"></span><br><span class="line"><span class="comment">% What is the left-most pixel that can be involved in the computation?</span></span><br><span class="line">left = <span class="built_in">floor</span>(u - kernel_width/<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% What is the maximum number of pixels that can be involved in the</span></span><br><span class="line"><span class="comment">% computation?  Note: it's OK to use an extra pixel here; if the</span></span><br><span class="line"><span class="comment">% corresponding weights are all zero, it will be eliminated at the end</span></span><br><span class="line"><span class="comment">% of this function.</span></span><br><span class="line">P = <span class="built_in">ceil</span>(kernel_width) + <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% The indices of the input pixels involved in computing the k-th output</span></span><br><span class="line"><span class="comment">% pixel are in row k of the indices matrix.</span></span><br><span class="line">indices = <span class="built_in">bsxfun</span>(@plus, left, <span class="number">0</span>:P-<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% The weights used to compute the k-th output pixel are in row k of the</span></span><br><span class="line"><span class="comment">% weights matrix.</span></span><br><span class="line">weights = h(<span class="built_in">bsxfun</span>(@minus, u, indices));</span><br><span class="line"></span><br><span class="line"><span class="comment">% Normalize the weights matrix so that each row sums to 1.</span></span><br><span class="line">weights = <span class="built_in">bsxfun</span>(@rdivide, weights, sum(weights, <span class="number">2</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">% Clamp out-of-range indices; has the effect of replicating end-points.</span></span><br><span class="line">indices = min(max(<span class="number">1</span>, indices), in_length);</span><br><span class="line"></span><br><span class="line"><span class="comment">% If a column in weights is all zero, get rid of it.</span></span><br><span class="line">kill = <span class="built_in">find</span>(~any(weights, <span class="number">1</span>));</span><br><span class="line"><span class="keyword">if</span> ~<span class="built_in">isempty</span>(kill)</span><br><span class="line">    weights(:,kill) = <span class="matrix">[]</span>;</span><br><span class="line">    indices(:,kill) = <span class="matrix">[]</span>;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>matlab的注释写得很清楚了，output的坐标用x变量表示，对应映射回input的坐标用u表示，当x=0.5时候，u也应该为0.5;当x=0.5+scale时，u为1.5。这样会得到怎么的映射效果呢，笔者画了一幅示意图：<br><img src="http://hexo-pic-zhangliliang.qiniudn.com/drawing.png" alt=""><br>这里的坐标系是matlab下的坐标系（左上角为原点，从1开始计数），其中红色的4个点表示input的四个点，灰色的16个点是output的点映射回到input坐标系下的坐标。图片下方有两行x和u分别是灰色点在output和input下的x方向上的坐标值。<br>所以根据上面的映射方法，得到output映射回input的图像特点有两个：</p>
+<ol>
+<li>图片的中心是重合的（图中央的黑点为中心）</li>
+<li>output中的相邻像素的距离为input相邻像素的距离的1/scale</li>
+</ol>
+<p>另外，代码中计算weight时候用到的h函数，在bilinear中是长这个样子的（下图的左边部分，图片来自<a href="http://stackoverflow.com/questions/26823140/imresize-trying-to-understand-the-bicubic-interpolation" target="_blank" rel="external">这里</a>）：<br><img src="http://i.stack.imgur.com/JJ6ll.png" alt=""><br>即一个等腰三角形，代表的意思是距离某个参考点距离为1的时候，权重递减，超过1就没有权重了。</p>
+<p>有了上面的铺垫，要计算灰色的像素值就简单了，举几个例子。<br>对于第一行第一个灰色点，坐标是(0.75，0.75)，(0.75±1，0.75±1)范围的点只有左上角的红点，于是它的值就取该红点的像素值。<br>对于第二行第一个灰色点，坐标是(0.75, 1.25)，(0.75±1, 1.25±1)范围的点有两个，即左上和左下的红点，所以根据距离权重计算为左上的点较近占3/4，左下的点距离较远占1/4，那么最后像素的值就是8x3/4+16x1/4=10<br>对于第二行第二个灰色点，坐标是(1.25, 1.25), (1.25±1, 1.25±1)范围的点包括了全部四个红点，于是也是根据距离来计算权值，归一化话，左上右上左下右下的点的权值分别为(27,9,9,3)/48，根据这个权重进行加权，结果为(8x27+16x9x2+32x3)/48=12.5，四舍五入取13。</p>
+<p>对应上述matlab的结果，说明这样进行理解应该是没有问题的了。</p>
+<p>参考页面：</p>
+<ol>
+<li><a href="http://stackoverflow.com/questions/26142288/resize-an-image-with-bilinear-interpolation-without-imresize" target="_blank" rel="external">http://stackoverflow.com/questions/26142288/resize-an-image-with-bilinear-interpolation-without-imresize</a></li>
+<li><a href="http://blog.sina.com.cn/s/blog_ab584cac0101h0xy.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_ab584cac0101h0xy.html</a></li>
+<li><a href="http://www.cnblogs.com/linzhao/archive/2012/02/16/2354175.html" target="_blank" rel="external">http://www.cnblogs.com/linzhao/archive/2012/02/16/2354175.html</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Bilinear_interpolation" target="_blank" rel="external">http://en.wikipedia.org/wiki/Bilinear_interpolation</a></li>
+<li><a href="http://tech-algorithm.com/articles/linear-interpolation/" target="_blank" rel="external">http://tech-algorithm.com/articles/linear-interpolation/</a></li>
+<li><a href="http://tech-algorithm.com/articles/bilinear-image-scaling/" target="_blank" rel="external">http://tech-algorithm.com/articles/bilinear-image-scaling/</a></li>
+<li><a href="http://stackoverflow.com/questions/8808996/bilinear-interpolation-to-enlarge-bitmap-images" target="_blank" rel="external">http://stackoverflow.com/questions/8808996/bilinear-interpolation-to-enlarge-bitmap-images</a></li>
+<li><a href="http://stackoverflow.com/questions/26823140/imresize-trying-to-understand-the-bicubic-interpolation" target="_blank" rel="external">http://stackoverflow.com/questions/26823140/imresize-trying-to-understand-the-bicubic-interpolation</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[讨论双线性插值的原理和实现细节]]>
+    
+    </summary>
+    
+      <category term="Image Processing" scheme="http://zhangliliang.com/tags/Image-Processing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[关于Sparse Coding]]></title>
+    <link href="http://zhangliliang.com/2015/02/01/about-sparse-coding/"/>
+    <id>http://zhangliliang.com/2015/02/01/about-sparse-coding/</id>
+    <published>2015-02-01T02:07:12.000Z</published>
+    <updated>2015-02-01T03:58:06.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="20150201_基本概念">20150201 基本概念</h2><p>基本概念参考了<a href="http://ufldl.stanford.edu/wiki/index.php/Sparse_Coding" target="_blank" rel="external">UFLDL</a>。<br>对于每个输入x，需要找到一组基φ来进行重构，形式化表示为：<br><img src="http://ufldl.stanford.edu/wiki/images/math/9/5/7/95773d0fedcb4bc39aff6546ccd5af25.png" alt=""><br>其中φ的维度k是大于x的维度n的，称为over-complete(超完备)，它的好处是：</p>
+<blockquote>
+<p>better able to capture structures and patterns inherent in the input data</p>
+</blockquote>
+<p>然后由于超完备，所以对于固定的φ，每个输入是不止一组解的，也就是对于同一个x有多个a，所以这里引入sparse的概念，其实sparse应该算是一个正则项，约束了条件，让大部分a都为0。而sparse的motivation是：</p>
+<blockquote>
+<p>The choice of sparsity as a desired characteristic of our representation of the input data can be motivated by the observation that most sensory data such as natural images may be described as the superposition of <strong>a small number of atomic elements</strong> such as surfaces or edges. </p>
+</blockquote>
+<p>于是求解输入x的sparse形式，优化目标可以写成下列形式：<br><img src="http://ufldl.stanford.edu/wiki/images/math/f/1/1/f110901ddedcba59e339de5f16c547da.png" alt=""><br>有两项，第一项称为reconstruction term，第二项S(.)称为sparsity penalty。也就是理解成，在一个稀疏的约束下最小化重构误差的问题。<br>最原始S(.)是0范式，但是不好求解，所以一般会会用1范式，2范式，或者log形式。<br>另外由于上面式子可以通过缩写a而增大φ得到类似的解，所以需要给φ增加一个上限C，式子就变成了：<br><img src="http://ufldl.stanford.edu/wiki/images/math/a/9/3/a93c6a5d7e7a22c66e82490be078b2af.png" alt=""><br>看式子的形式，就跟soft margin下的SVM的loss挺像的了，SVM的是这样子的：<br><img src="http://img.my.csdn.net/uploads/201304/03/1364959576_9747.jpg" alt=""><br>第一项可以看成正则项约束，第二项可以看成是分类误差。</p>
+<p>至于怎么求解参数，这份教程简单提了一下，由于需要求解两个未知的参数a和φ，所以需要用到EM-like的方法：</p>
+<ol>
+<li>对于每个样本优化a</li>
+<li>对于所有样本优化φ</li>
+</ol>
+<p>循环上述两步知道收敛。<br>而测试时候，需要进行第一步，所以sparse coding在测试时候会比较慢。</p>
+<h2 id="sparse_coding和sparse_autoencoder的联系">sparse coding和sparse autoencoder的联系</h2><p>依然是参考UFLDL：</p>
+<blockquote>
+<p><a href="http://ufldl.stanford.edu/wiki/index.php/Autoencoders_and_Sparsity" target="_blank" rel="external">http://ufldl.stanford.edu/wiki/index.php/Autoencoders_and_Sparsity</a><br><a href="http://ufldl.stanford.edu/wiki/index.php/Sparse_Coding:_Autoencoder_Interpretation" target="_blank" rel="external">http://ufldl.stanford.edu/wiki/index.php/Sparse_Coding:_Autoencoder_Interpretation</a></p>
+</blockquote>
+<p>简单的理解sparse autoencoder(SAE)，一般的autoencoder的隐藏神经元是比输入输出都要少的，这样能够学习到“压缩”的特征。而SAE刚刚相反，隐藏神经元是大于输入输出的，但是它增加了sparse约束，具体理解跟上面sparse是同一个东西：超正定下但是很多系数为0，也能够学习到输入样本的结构。<br>而对于SAE的sparse，可以理解成是隐层神经元<strong>尽量都不要被激活</strong>，所以我们可以通过在loss增加一项正则项来限制隐层神经元的平均激活小于某个特定值ρ，形式化表示为：<br><img src="http://ufldl.stanford.edu/wiki/images/math/8/a/7/8a77066279d89dae4688d9bf4508e0a1.png" alt=""></p>
+<p>回到sparse coding，它跟SAE有什么关系了，教程只写了一句话：</p>
+<blockquote>
+<p>Sparse coding can be seen as a modification of the sparse autoencoder method in which we try to learn the set of features for some data “<strong>directly</strong>“. Together with an associated basis for transforming the learned features from the feature space to the data space, we can then reconstruct the data from the learned features.</p>
+</blockquote>
+<p>怎么理解呢，关键应该就是这个directly了。对于SAE的特征学习过程，其实算是indirectly的，因为SAE的特征是在隐神经元的，优化目标其实重构输入，而特征算是在该目标下的一种副产品；另外，个人理解，SAE的稀疏性约束也是比较弱的。另一方面，sparse coding（SC）的目的很明确，就是要学习特征，只不过这些特征能够重构出输入，学习特征是主体，也就是重构反而是学习特征的一种约束。</p>
+<p>但其实我觉得本质上还是大同小异的，只是突出了不同的主体，SAE的主体是重构，SC的主体是特征学习，其实从loss来说也都是一项重构项加一项稀疏项，主要是看哪个比较重要咯。</p>
+<p>另外，这份教程还给出了SC更加紧凑一个优化形式：<br><img src="http://ufldl.stanford.edu/wiki/images/math/a/2/f/a2f57c5746669d09790f9d862352c89b.png" alt=""><br>跟上面的式子相比：<br><img src="http://ufldl.stanford.edu/wiki/images/math/a/9/3/a93c6a5d7e7a22c66e82490be078b2af.png" alt=""><br>本质是一样的，这里的A相当于上面的φ，s相当于上面的a。</p>
+<p>为了方便求解，可以把上式的s.t.也统一到式子中：<br><img src="http://ufldl.stanford.edu/wiki/images/math/1/d/6/1d6a2cef1550cd6830cc45e56d120dd5.png" alt=""></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[记录学习Sparse Coding的笔记]]>
+    
+    </summary>
+    
+      <category term="Computer Vision" scheme="http://zhangliliang.com/tags/Computer-Vision/"/>
+    
+      <category term="Sparse Coding" scheme="http://zhangliliang.com/tags/Sparse-Coding/"/>
+    
+  </entry>
+  
+</feed>
