@@ -19,7 +19,7 @@
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({ TeX: { equationNumbers: {autoNumber: "all"} } });
 </script>
-<script type="text/javascript" src="MathJax/MathJax.js"></script>
+<script type="text/javascript" src="../../MathJax/MathJax.js"></script>
 
 
 <style>
@@ -86,7 +86,7 @@ body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
    <div class="w3-content w3-justify  w3-padding-64" id="home">
      <h3 class="w3-text-light-grey">Machine learning  vs  Transfer learning </h2>
        <hr style="width:200px" class="w3-opacity">
-    <img src="vision_domain_adaptation/figs/f3.png" alt=" " class="w3-image" width="900" height="1000">
+    <img src="../vision_domain_adaptation/figs/f3.png" alt=" " class="w3-image" width="900" height="1000">
 <br>
 
 
@@ -186,7 +186,7 @@ In this work, our main idea is: <br>
     <h3 class="w3-text-light-grey">Overview</h2>
     <hr style="width:100px" class="w3-opacity">
         <figure>
-        <img src="images/cdda.png" alt=" Overview CDDA" class="w3-image" width="900" height="1000">
+        <img src="../../images/cdda.png" alt=" Overview CDDA" class="w3-image" width="900" height="1000">
         <figcaption>  <br><span class="w3-hide-small">  Illustration of the major difference between our proposed method and previous state-of-the-art: The geometrical shape in round, triangle and square represents samples of  different class labels. Cloud colored in red or blue represents the source or target domain, respectively. The latent shared feature space is represented by ellipse.  The green ellipse illustrates the the latent feature space obtained by the previous approaches, whereas the purple one illustrates the novel latent shared feature space by the proposed method. The upper part of both ellipses represents the marginal distribution,  while the lower part denotes the conditional distribution. As can be seen from the marginal distribution in the lower part of Fig.1(b), samples with same label are clustered together  while samples with different labels, thus from different sub-domains, are separated. This is in contrast with the conditional distribution in the lower part of Fig.1(a) where samples with different labels are completely mixed, thus making harder the discrimination of samples of different labels</figcaption>
         </figure>
 
@@ -262,7 +262,7 @@ $$
 The complete learning algorithm  is summarized here
  <figure>
     <center>
-        <img src="images/cdda_algo.png"  class="w3-image" width ="400">
+        <img src="../../images/cdda_algo.png"  class="w3-image" width ="400">
  </center>
         
         </figure>
@@ -275,7 +275,7 @@ The complete learning algorithm  is summarized here
 Quantitative comparisons with state-of-the-arts: Accuracy(%) on 36 cross-domain image classifications on four different datasets
     <figure>
     <center>
-        <img src="images/cdda_result.png" alt="  " class="w3-image" height="100%" >
+        <img src="../../images/cdda_result.png" alt="  " class="w3-image" height="100%" >
          </center>
         <figcaption>  <br><span class="w3-hide-small"> Quantitative comparisons with state-of-the-arts:
 Accuracy(%) on 36 cross-domain image classifications on four
@@ -290,8 +290,8 @@ Parameter sensitivity and convergence analysis: (a) accuracy w.r.t $\#$iteration
 
     <figure>
     <center>
-    <embed src="publications/cdda/1.pdf" type="application/pdf" width ="100%" >
-    <embed src="publications/cdda/2.pdf" type="application/pdf" width="100%" >
+    <embed src="1.pdf" type="application/pdf" width ="100%" >
+    <embed src="2.pdf" type="application/pdf" width="100%" >
     </center>
 <!--         <figcaption>  <br><span class="w3-hide-small">
         </figcaption> -->
