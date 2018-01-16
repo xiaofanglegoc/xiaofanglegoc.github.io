@@ -1,0 +1,15 @@
+# Fdb version 3
+["pdflatex"] 1515753263 "main.tex" "/home/wang/Dropbox/homepage/Publications/cdda/main.pdf" "main" 1515753264
+  "/etc/texmf/web2c/texmf.cnf" 1504515676 475 c0e671620eb5563b2130f56340a5fde8 ""
+  "/home/wang/Dropbox/homepage/Publications/cdda/main.aux" 1515753263 8 a94a2480d3289e625eea47cd1b285758 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/base/article.cls" 1480098821 19821 310da678527a7dfe2a02c88af38079b7 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo" 1480098821 8292 e897c12e1e886ce77fe26afc5d470886 ""
+  "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1488610416 31340 0f53f8665296bf8fe6c697f9505e31d8 ""
+  "/usr/share/texmf/web2c/texmf.cnf" 1488610416 31340 0f53f8665296bf8fe6c697f9505e31d8 ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1504515934 3869609 64e7287e7dcc85b434902ba739b29f42 ""
+  "iccv.sty" 0 -1 0 ""
+  "main.tex" 1515659006 71957 e6a4801a6e3d52381c7afef54a9641ac ""
+  (generated)
+  "/home/wang/Dropbox/homepage/Publications/cdda/main.pdf"
+  "/home/wang/Dropbox/homepage/Publications/cdda/main.log"
+  "main.log"

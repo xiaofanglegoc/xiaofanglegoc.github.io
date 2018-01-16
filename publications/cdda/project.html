@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script type="text/javascript"
+  src="LaTexMathML.js">
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({ TeX: { equationNumbers: {autoNumber: "all"} } });
+</script>
+<script type="text/javascript" src="MathJax/MathJax.js"></script>
+
+
+<style>
+body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+.w3-row-padding img {margin-bottom: 12px}
+/* Set the width of the sidebar to 120px */
+.w3-sidebar {width: 120px;background: #222;}
+/* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+#main {margin-left: 120px}
+/* Remove margins from "page content" on small screens */
+@media only screen and (max-width: 00px) {#main {margin-left: 0}}
+</style>
+<body class="w3-black">
+
+<!-- Icon Bar (Sidebar - hidden on small screens) -->
+<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
+  <!-- Avatar image in top left corner -->
+  <img src="/w3images/avatar_smoke.jpg" style="width:100%">
+  <a href="#home" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>HOME</p>
+  </a>
+  <a href="#cdda" class="w3-bar-item w3-button w3-padding-large w3-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>CDDA</p>
+  </a>
+  <a href="#rsacdda" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>RSA-CDDA</p>
+  </a>
+  <a href="#cvpr" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>DLC-DA</p>
+  </a>
+  <a href="#pami" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>DGA-DA</p>
+  </a>
+    <a href="#code" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>CODE</p>
+  </a>
+</nav>
+
+<!-- Navbar on small screens (Hidden on medium and large screens) -->
+<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
+  <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
+  <a href="#home" class="w3-bar-item w3-button" style="width:25% !important">HOME</a>
+    <a href="#cdda" class="w3-bar-item w3-button" style="width:25% !important">CDDA</a>
+<!--     <a href="#rsacdda" class="w3-bar-item w3-button" style="width:25% !important">RSA-CDDA</a>
+    <a href="#cvpr" class="w3-bar-item w3-button" style="width:25% !important">DLC-DA</a>
+    <a href="#pami" class="w3-bar-item w3-button" style="width:25% !important">DGA-DA</a>
+    <a href="#code" class="w3-bar-item w3-button" style="width:25% !important">CODE</a> -->
+  </div>
+</div>
+
+<!-- Page Content -->
+<div class="w3-padding-large" id="main">
+  <!-- Header/Home -->
+  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+    <h1 class="w3-jumbo"><span class="w3-hide-small"> Domain </span>  Adaptation</h1>
+    Domain adaptation (DA) is transfer learning which aims to leverage labeled data in a related source domain to achieve informed knowledge transfer and help the classification of unlabeled data in a target domain.
+  </header>
+   <div class="w3-content w3-justify  w3-padding-64" id="home">
+     <h3 class="w3-text-light-grey">Machine learning  vs  Transfer learning </h2>
+       <hr style="width:200px" class="w3-opacity">
+    <img src="vision_domain_adaptation/figs/f3.png" alt=" " class="w3-image" width="900" height="1000">
+<br>
+
+
+<br>
+<h3 class="w3-text-light-grey w3-hover-red">Notation Table</h2>
+<hr style="width:300px" class="w3-opacity">
+<p>
+<table class="w3-table-all w3-hoverable w3-text-black">
+    <thead>
+    <tr class="w3-hover-red">
+      <th>Symbol</th>
+      <th>Notation</th>
+      <th>Defintion</th>
+    </tr>
+    </thead>
+    <tr class="w3-hover-black">
+      <td>$\mathcal{D}$ </td>
+        <td>Domain</td>
+        <td>$$\mathcal{D}=\{\mathcal{X}, \mathcal{P}(x)\}$$</td>
+    </tr>
+
+    <tr class="w3-hover-black">
+      <td>$\mathcal{X}$ </td>
+        <td>Feature space</td>
+        <td>$$\mathcal{X}=\{x_1, x2, ..., x_N\}$$</td>
+    </tr>
+        <tr class="w3-hover-black">
+      <td>$\mathcal{P}$ </td>
+        <td>Marginal Probability</td>
+        <td>Probability of any single event occurring unconditioned on any other events. Whenever someone asks you whether the weather is going to be rainy or sunny today, you are computing a marginal probability.</td>
+    </tr>
+        <tr class="w3-hover-black">
+      <td>$T$ </td>
+        <td>Task</td>
+        <td>$$T=\{\mathcal{Y}, f(x)\}$$</td>
+    </tr>
+    <tr class="w3-hover-black">
+      <td>$\mathcal{Y}$ </td>
+        <td>Label</td>
+        <td>Label  Set</td>
+    </tr>
+
+    <tr class="w3-hover-black">
+      <td>$f(x)$ </td>
+        <td>Conditional probability function for input x</td>
+        <td>$$f(x)=\mathcal{Q}(y|x)$$</td>
+    </tr>
+        <tr class="w3-hover-black">
+      <td>$\mathcal{S}$ </td>
+        <td>Source</td>
+        <td>$$S=\{x_i,y_i\}$$ </td>
+    </tr>
+
+
+  </table>
+  </p>
+
+
+
+<br>
+<h3 class="w3-text-light-grey ">Problem Statement</h2>
+       <hr style="width:300px" class="w3-opacity">
+<p>Given with $\mathcal{D}_\mathcal{S}$, where S has label information, how to infer another domain $\mathcal{D}_\mathcal{T}$'s label set, i.e. $\mathcal{Y_T}$? Suppose that : 
+<nav class="w3-hover-red">
+<p> $$\mathcal{Y_S}=\mathcal{Y_T}$$</p>
+<p> $$\mathcal{X_S}=\mathcal{X_T}$$</p>
+<p> $$\mathcal{P}(\mathcal{X_S})\neq \mathcal{P}(\mathcal{X_T})$$</p>  
+<p> $$\mathcal{Q}(\mathcal{Y_S|X_S})\neq \mathcal{Q}(\mathcal{Y_T|X_T})$$</p>  
+</nav>
+ </p>
+
+
+
+<header class="w3-container w3-padding-32 w3-center w3-black" id="ourpro">
+    <h1 class="w3-jumbo"><span class="w3-hide-small">Our Proposals</h1>
+  </header>
+
+In short, our proposals are based on two principals:
+<blockquote class="w3-panel w3-leftbar w3-light-grey  w3-hover-gray">
+      <p ><i> <b>P1:</b> Find a new latent feature space, where  the distance of $\mathcal{P}(\mathcal{X_S})$ and $ \mathcal{P}(\mathcal{X_T})$ is minimized;
+      <br> <br><b>P2: </b> Infer $\mathcal{Q}(\mathcal{Y_T|X_T})$ by prior information in $\mathcal{Q}(\mathcal{Y_S|X_S})$ in sprit of semi-supervised paradigm.</i></p>
+</blockquote> 
+
+
+  <div class="w3-content w3-justify  w3-padding-64" id="cdda">
+    <h2 class="w3-text-light-grey">CDDA: Close Yet Discriminative Domain Adaptation </h2>
+  <center><a href="https://arxiv.org/abs/1704.04235" > <font color="red"> PDF</font></a> &nbsp &nbsp&nbsp&nbsp <a href="#cdda"><font color="red"> Project</font></a> &nbsp &nbsp&nbsp&nbsp<a href="#code"><font color="red"> Code </a></font></center>
+        <hr style="width:900px" class="w3-opacity">
+
+    <!-- <hr style="width:200px" class="w3-text-light-grey"> -->
+In this work, our main idea is: <br>
+    <p>&nbsp &nbsp &nbsp &nbsp (I) First, to follow P1 and P2, we explicitely minimize  the discrepancy between the source and target domain, measured in terms of both marginal and conditional probability distribution via Maximum Mean Discrepancy is minimized so as to attract two domains close to each other. <br>
+    &nbsp &nbsp &nbsp &nbsp (II) Second,  to follow P1 and P2, we also design a repulsive force term,  to explicitely minimize  the discrepancy between the subdomain of  source and target domain; <br>
+    &nbsp &nbsp &nbsp &nbsp&nbsp&nbsp (III) Finally, to follow P2, we infer the label set of target domain by label space gometric smoothless 
+    </p>
+
+    <h3 class="w3-text-light-grey">Overview</h2>
+    <hr style="width:100px" class="w3-opacity">
+        <figure>
+        <img src="images/cdda.png" alt=" Overview CDDA" class="w3-image" width="900" height="1000">
+        <figcaption>  <br><span class="w3-hide-small">  Illustration of the major difference between our proposed method and previous state-of-the-art: The geometrical shape in round, triangle and square represents samples of  different class labels. Cloud colored in red or blue represents the source or target domain, respectively. The latent shared feature space is represented by ellipse.  The green ellipse illustrates the the latent feature space obtained by the previous approaches, whereas the purple one illustrates the novel latent shared feature space by the proposed method. The upper part of both ellipses represents the marginal distribution,  while the lower part denotes the conditional distribution. As can be seen from the marginal distribution in the lower part of Fig.1(b), samples with same label are clustered together  while samples with different labels, thus from different sub-domains, are separated. This is in contrast with the conditional distribution in the lower part of Fig.1(a) where samples with different labels are completely mixed, thus making harder the discrimination of samples of different labels</figcaption>
+        </figure>
+
+    <h3 class="w3-text-light-grey">Algorithm</h2>
+ <hr style="width:200px" class="w3-opacity">
+  <h4 class="w3-text-light-grey">Closer: Marginal and Conditional Distribution Domain Adaptation</h4>
+Marginal  Distribution Domain Adaptation:
+<br>
+$$Dis{t^{marginal}}({{\cal D}_{\cal S}},{{\cal D}_{\cal T}}) =\\ {\left\| {\frac{1}{{{n_s}}}\sum\limits_{i = 1}^{{n_s}} {{{\bf{A}}^T}{x_i} - } \frac{1}{{{n_t}}}\sum\limits_{j = {n_s} + 1}^{{n_s} + {n_t}} {{{\bf{A}}^T}{x_j}} } \right\|^2}
+		= tr({{\bf{A}}^T}\bf{X}{\bf{M_0}}\bf{{X^T}A})	$$
+
+where ${{\bf{M}}_0}$ represents the marginal distribution between ${{\cal D}_{\cal S}}$ and ${{\cal D}_{\cal T}}$ and its calculation is obtained by:
+
+$$\begin{array}{l}
+	{({{\bf{M}}_0})_{ij}} = \left\{ \begin{array}{l}
+	\frac{1}{{{n_s}{n_s}}},\;\;\;{x_i},{x_j} \in {D_{\cal S}}\\
+	\frac{1}{{{n_t}{n_t}}},\;\;\;{x_i},{x_j} \in {D_{\cal T}}\\
+	0,\;\;\;\;\;\;\;\;\;\;\;\;otherwise
+	\end{array} \right.
+	\end{array}$$
+
+ Conditional  Distribution Domain Adaptation:
+<br>the sum of the empirical distances over the class labels between the sub-domains of a same label in the source and target domain
+
+$$\begin{array}{c}
+		\begin{array}{l}
+		Dis{t^{conditional}}\sum\limits_{c = 1}^C {({{\cal D}_{\cal S}}^c,{{\cal D}_{\cal T}}^c)}  = \\
+		{\left\| {\frac{1}{{n_s^{(c)}}}\sum\limits_{{x_i} \in {{\cal D}_{\cal S}}^{(c)}} {{{\bf{A}}^T}{x_i}}  - \frac{1}{{n_t^{(c)}}}\sum\limits_{{x_j} \in {{\cal D}_{\cal T}}^{(c)}} {{{\bf{A}}^T}{x_j}} } \right\|^2}\\
+		= tr({{\bf{A}}^T}{\bf{X}}{{\bf{M}}_c}{{\bf{X}}^{\bf{T}}}{\bf{A}})
+		\end{array}
+		\end{array}
+$$
+where $\bf M_c$ represents the conditional distribution between sub-domains in ${{\cal D}_{\cal S}}$ and ${{\cal D}_{\cal T}}$ and it is defined as:
+$$
+\begin{array}{*{20}{c}}
+{{{({{\bf{M}}_c})}_{ij}} = \left\{ {\begin{array}{*{20}{l}}
+		{\frac{1}{{n_s^{(c)}n_s^{(c)}}},\;\;\;{x_i},{x_j} \in {D_{\cal S}}^{(c)}}\\
+		{\frac{1}{{n_t^{(c)}n_t^{(c)}}},\;\;\;{x_i},{x_j} \in {D_{\cal T}}^{(c)}}\\
+		{\frac{{ - 1}}{{n_s^{(c)}n_t^{(c)}}},\;\;\;\left\{ {\begin{array}{*{20}{l}}
+				{{x_i} \in {D_{\cal S}}^{(c)},{x_j} \in {D_{\cal T}}^{(c)}}\\
+				{{x_i} \in {D_{\cal T}}^{(c)},{x_j} \in {D_{\cal S}}^{(c)}}
+				\end{array}} \right.}\\
+		{0,\;\;\;\;\;\;\;\;\;\;\;\;otherwise}
+		\end{array}} \right.}
+\end{array}
+$$
+<h4 class="w3-text-light-grey">Repulsive Force Domain Adaptation</h4>
+ The repulsive force domain adaptation is defined as: 
+$Dis{t^{repulsive}} = Dist_{{\cal S} \to {\cal T}}^{repulsive} + Dist_{{\cal T} \to {\cal S}}^{repulsive}$, where ${{\cal S} \to {\cal T}}$ and ${{\cal T} \to {\cal S}}$ index the distances computed from ${D_{\cal S}}$ to ${D_{\cal T}}$ and ${D_{\cal T}}$ to ${D_{\cal S}}$, respectively. $Dist_{{\cal S} \to {\cal T}}^{repulsive}$ represents the sum of the distances between each source sub-domain ${D_{\cal S}}^{(c)}$ and all the  target sub-domains ${D_{\cal T}}^{(r);\;r \in \{ \{ 1...C\}  - \{ c\} \} }$ except the one with the label $c$. 
+$${Dist}_{{\cal S} \to {\cal T}}^{repulsive} = \sum\limits_{c = 1}^C \begin{array}{l}
+			{\left\| {\frac{1}{{n_s^{(c)}}}\sum\limits_{{x_i} \in {D_{\cal S}}^{(c)}} {{{\bf{A}}^T}{x_i}}  - \frac{1}{{\sum\limits_{r \in \{ \{ 1...C\}  - \{ c\} \} } {n_t^{(r)}} }}\sum\limits_{{x_j} \in D_{\cal T}^{(r)}} {{{\bf{A}}^T}{x_j}} } \right\|^2}\\
+			= \sum\limits_{c = 1}^C {tr({{\bf{A}}^T}{\bf{X}}{{\bf{M}}_{{\cal S} \to {\cal T}}}{{\bf{X}}^{\bf{T}}}{\bf{A}})} 
+			\end{array} $$
+
+
+where ${{\bf{M}}_{{\cal S} \to {\cal T}}}$ is defined as:
+$$
+\begin{array}{c}
+				(\bf M_{{{\cal S} \to {\cal T}}})_{ij} = \left\{ {\begin{array}{*{20}{l}}
+						{\frac{1}{{n_s^{(c)}n_s^{(c)}}},\;\;\;{x_i},{x_j} \in {D_{\cal S}}^{(c)}}\\
+						{\frac{1}{{n_t^{(r)}n_t^{(r)}}},\;\;\;{x_i},{x_j} \in {D_{\cal T}}^{(r)}}\\
+						{\frac{{ - 1}}{{n_s^{(c)}n_t^{(r)}}},\;\;\;\left\{ {\begin{array}{*{20}{l}}
+									{{x_i} \in {\cal D_{\cal S}}^{(c)},{x_j} \in {D_{\cal T}}^{(r)}}\\
+									{{x_i} \in {\cal D_{\cal T}}^{(r)},{x_j} \in {\cal D_{\cal S}}^{(c)}}
+								\end{array}} \right.}\\
+							{0,\;\;\;\;\;\;\;\;\;\;\;\;otherwise}
+						\end{array}} \right.
+					\end{array}
+$$
+
+   <h3 class="w3-text-light-grey">Optimization</h2>
+    <hr style="width:100px" class="w3-opacity">
+The complete learning algorithm  is summarized here
+ <figure>
+    <center>
+        <img src="images/cdda_algo.png"  class="w3-image" width ="400">
+ </center>
+        
+        </figure>
+
+  <h3 class="w3-text-light-grey">Experiment</h2>
+    <hr style="width:100px" class="w3-opacity">
+<p>For the problem of domain adaptation, it is not possible to tune a set of optimal hyper-parameters, given the fact that the target domain has no labeled data. Following the setting of JDA, we also evaluate the proposed CDDA by empirically searching the parameter space for the optimal settings. Specifically, the proposed CDDA method has three hyper-parameters, i.e., the subspace dimension $k$, regularization parameters $\lambda $ and $\alpha$.</p> <p>In  our experiments, we set $k = 100$ and 1) $\lambda  = 0.1$, and $\alpha  = 0.99$ for <b>USPS, MNIST, COIL20 </b>, 2) $\lambda  = 0.1$, $\alpha  = 0.2$ for <b>PIE</b>, 3) $\lambda  = 1$, $\alpha  = 0.99$ for <b>Office</b> and <b>Caltech-256.</b></p>
+<h4 class="w3-text-light-grey">Quantitative comparisons</h4>
+<p>
+Quantitative comparisons with state-of-the-arts: Accuracy(%) on 36 cross-domain image classifications on four different datasets
+    <figure>
+    <center>
+        <img src="images/cdda_result.png" alt="  " class="w3-image" height="100%" >
+         </center>
+        <figcaption>  <br><span class="w3-hide-small"> Quantitative comparisons with state-of-the-arts:
+Accuracy(%) on 36 cross-domain image classifications on four
+different datasets </span></figcaption>
+        </figure>
+</p>
+
+<h4 class="w3-text-light-grey">Parameter sensitivity and convergence analysis</h4>
+<p>
+Using  COIL2 vs COIL1, and C $\rightarrow$ W datasets, we also empirically check the convergence  and the sensitivity of the proposed CDDA  with respect to the hyper-parameters.  Similar trends can be observed on all the other datasets.
+Parameter sensitivity and convergence analysis: (a) accuracy w.r.t $\#$iterations; (b) accuracy w.r.t regularization parameter $\alpha$. As can be seen there, the performance of the proposed CDDA  along with JDA  becomes stable after about 10 iterations. 
+
+    <figure>
+    <center>
+    <embed src="publications/cdda/1.pdf" type="application/pdf" width ="100%" >
+    <embed src="publications/cdda/2.pdf" type="application/pdf" width="100%" >
+    </center>
+<!--         <figcaption>  <br><span class="w3-hide-small">
+        </figcaption> -->
+        </figure>
+
+    </p>
+<br>
+ 
+<div class="w3-content w3-justify  w3-padding-64" id="code">
+    <h2 class="w3-text-light-grey">Bibliography</h2>
+    
+<ol>
+   <li id='#bib01'>Cassius Dio, 50:5; quoted from Cassius Dio: The 
+Roman History: The Age of Augustus, (trans.) (<time datetime='1987'>
+1987</time>) Scott-Kilvert I.; reprinted in <cite>AA100 Assignment 
+Booklet</cite> (<time datetime='2010-10'>October 2010</time>), 
+Milton Keynes, The Open University, p.18.</li>
+</ol>
+
+<div class="w3-content w3-justify  w3-padding-64" id="code">
+    <h2 class="w3-text-light-grey">CODE</h2>
+   <nav> 
+   <p>CDDA: come soon</p>
+   <p>RSA-CDDA: come soon</p>
+   <p>DL-CDDA: come soon</p>
+   </nav>
+
+
+</body>
+</html>

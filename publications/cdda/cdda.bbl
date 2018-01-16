@@ -1,0 +1,280 @@
+\begin{thebibliography}{10}
+
+\bibitem{JMLR:v17:15-207}
+Mahsa Baktashmotlagh, Mehrtash Harandi, and Mathieu Salzmann.
+\newblock Distribution-matching embedding for visual domain adaptation.
+\newblock {\em Journal of Machine Learning Research}, 17(108):1--30, 2016.
+
+\bibitem{ben2010theory}
+Shai Ben-David, John Blitzer, Koby Crammer, Alex Kulesza, Fernando Pereira, and
+  Jennifer~Wortman Vaughan.
+\newblock A theory of learning from different domains.
+\newblock {\em Machine learning}, 79(1):151--175, 2010.
+
+\bibitem{borgwardt2006integrating}
+Karsten~M Borgwardt, Arthur Gretton, Malte~J Rasch, Hans-Peter Kriegel,
+  Bernhard Sch{\"o}lkopf, and Alex~J Smola.
+\newblock Integrating structured biological data by kernel maximum mean
+  discrepancy.
+\newblock {\em Bioinformatics}, 22(14):e49--e57, 2006.
+
+\bibitem{DBLP:journals/corr/abs-1206-4683}
+Minmin Chen, Zhixiang~Eddie Xu, Kilian~Q. Weinberger, and Fei Sha.
+\newblock Marginalized denoising autoencoders for domain adaptation.
+\newblock {\em CoRR}, abs/1206.4683, 2012.
+
+\bibitem{DBLP:journals/corr/Csurka17}
+Gabriela Csurka.
+\newblock Domain adaptation for visual applications: {A} comprehensive survey.
+\newblock {\em CoRR}, abs/1702.05374, 2017.
+
+\bibitem{DBLP:journals/tip/DingF17}
+Zhengming Ding and Yun Fu.
+\newblock Robust transfer metric learning for image classification.
+\newblock {\em {IEEE} Trans. Image Processing}, 26(2):660--670, 2017.
+
+\bibitem{donahue2013semi}
+Jeff Donahue, Judy Hoffman, Erik Rodner, Kate Saenko, and Trevor Darrell.
+\newblock Semi-supervised domain adaptation with instance constraints.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 668--675, 2013.
+
+\bibitem{DBLP:conf/icml/DonahueJVHZTD14}
+Jeff Donahue, Yangqing Jia, Oriol Vinyals, Judy Hoffman, Ning Zhang, Eric
+  Tzeng, and Trevor Darrell.
+\newblock Decaf: {A} deep convolutional activation feature for generic visual
+  recognition.
+\newblock In {\em Proceedings of the 31th International Conference on Machine
+  Learning, {ICML} 2014, Beijing, China, 21-26 June 2014}, pages 647--655,
+  2014.
+
+\bibitem{DBLP:conf/iccv/FernandoHST13}
+Basura Fernando, Amaury Habrard, Marc Sebban, and Tinne Tuytelaars.
+\newblock Unsupervised visual domain adaptation using subspace alignment.
+\newblock In {\em {IEEE} International Conference on Computer Vision, {ICCV}
+  2013, Sydney, Australia, December 1-8, 2013}, pages 2960--2967, 2013.
+
+\bibitem{fortin2000augmented}
+Michel Fortin and Roland Glowinski.
+\newblock {\em Augmented Lagrangian methods: applications to the numerical
+  solution of boundary-value problems}, volume~15.
+\newblock Elsevier, 2000.
+
+\bibitem{DBLP:journals/pami/GhifaryBKZ17}
+Muhammad Ghifary, David Balduzzi, W.~Bastiaan Kleijn, and Mengjie Zhang.
+\newblock Scatter component analysis: {A} unified framework for domain
+  adaptation and domain generalization.
+\newblock {\em {IEEE} Trans. Pattern Anal. Mach. Intell.}, 39(7):1414--1430,
+  2017.
+
+\bibitem{DBLP:conf/icml/GongGS13}
+Boqing Gong, Kristen Grauman, and Fei Sha.
+\newblock Connecting the dots with landmarks: Discriminatively learning
+  domain-invariant features for unsupervised domain adaptation.
+\newblock In {\em Proceedings of the 30th International Conference on Machine
+  Learning, {ICML} 2013, Atlanta, GA, USA, 16-21 June 2013}, pages 222--230,
+  2013.
+
+\bibitem{gong2012geodesic}
+Boqing Gong, Yuan Shi, Fei Sha, and Kristen Grauman.
+\newblock Geodesic flow kernel for unsupervised domain adaptation.
+\newblock In {\em Computer Vision and Pattern Recognition (CVPR), 2012 IEEE
+  Conference on}, pages 2066--2073. IEEE, 2012.
+
+\bibitem{gretton2012kernel}
+Arthur Gretton, Karsten~M Borgwardt, Malte~J Rasch, Bernhard Sch{\"o}lkopf, and
+  Alexander Smola.
+\newblock A kernel two-sample test.
+\newblock {\em Journal of Machine Learning Research}, 13(Mar):723--773, 2012.
+
+\bibitem{DBLP:journals/pami/Hull94}
+Jonathan~J. Hull.
+\newblock A database for handwritten text recognition research.
+\newblock {\em {IEEE} Trans. Pattern Anal. Mach. Intell.}, 16(5):550--554,
+  1994.
+
+\bibitem{jhuo2012robust}
+I-Hong Jhuo, Dong Liu, DT~Lee, and Shih-Fu Chang.
+\newblock Robust visual domain adaptation with low-rank reconstruction.
+\newblock In {\em Computer Vision and Pattern Recognition (CVPR), 2012 IEEE
+  Conference on}, pages 2168--2175. IEEE, 2012.
+
+\bibitem{kifer2004detecting}
+Daniel Kifer, Shai Ben-David, and Johannes Gehrke.
+\newblock Detecting change in data streams.
+\newblock In {\em Proceedings of the Thirtieth international conference on Very
+  large data bases-Volume 30}, pages 180--191. VLDB Endowment, 2004.
+
+\bibitem{6341755}
+T.~H. Kim, K.~M. Lee, and S.~U. Lee.
+\newblock Learning full pairwise affinities for spectral segmentation.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  35(7):1690--1703, July 2013.
+
+\bibitem{krizhevsky2012imagenet}
+Alex Krizhevsky, Ilya Sutskever, and Geoffrey~E Hinton.
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock In {\em Advances in neural information processing systems}, pages
+  1097--1105, 2012.
+
+\bibitem{726791}
+Y.~Lecun, L.~Bottou, Y.~Bengio, and P.~Haffner.
+\newblock Gradient-based learning applied to document recognition.
+\newblock {\em Proceedings of the IEEE}, 86(11):2278--2324, Nov 1998.
+
+\bibitem{long2015learning}
+Mingsheng Long, Yue Cao, Jianmin Wang, and Michael~I Jordan.
+\newblock Learning transferable features with deep adaptation networks.
+\newblock In {\em ICML}, pages 97--105, 2015.
+
+\bibitem{long2013transfer}
+Mingsheng Long, Jianmin Wang, Guiguang Ding, Jiaguang Sun, and Philip~S Yu.
+\newblock Transfer feature learning with joint distribution adaptation.
+\newblock In {\em Proceedings of the IEEE International Conference on Computer
+  Vision}, pages 2200--2207, 2013.
+
+\bibitem{DBLP:conf/cvpr/LongWDSY14}
+Mingsheng Long, Jianmin Wang, Guiguang Ding, Jiaguang Sun, and Philip~S. Yu.
+\newblock Transfer joint matching for unsupervised domain adaptation.
+\newblock In {\em 2014 {IEEE} Conference on Computer Vision and Pattern
+  Recognition, {CVPR} 2014, Columbus, OH, USA, June 23-28, 2014}, pages
+  1410--1417, 2014.
+
+\bibitem{DBLP:journals/corr/LuoWHC17}
+Lingkun Luo, Xiaofang Wang, Shiqiang Hu, and Liming Chen.
+\newblock Robust data geometric structure aligned close yet discriminative
+  domain adaptation.
+\newblock {\em CoRR}, abs/1705.08620, 2017.
+
+\bibitem{DBLP:journals/corr/LuoWHWTC17}
+Lingkun Luo, Xiaofang Wang, Shiqiang Hu, Chao Wang, Yuxing Tang, and Liming
+  Chen.
+\newblock Close yet distinctive domain adaptation.
+\newblock {\em CoRR}, abs/1704.04235, 2017.
+
+\bibitem{NIPS2001_2092}
+Andrew~Y. Ng, Michael~I. Jordan, and Yair Weiss.
+\newblock On spectral clustering: Analysis and an algorithm.
+\newblock In T.~G. Dietterich, S.~Becker, and Z.~Ghahramani, editors, {\em
+  Advances in Neural Information Processing Systems 14}, pages 849--856. MIT
+  Press, 2002.
+
+\bibitem{pan2008transfer}
+Sinno~Jialin Pan, James~T Kwok, and Qiang Yang.
+\newblock Transfer learning via dimensionality reduction.
+\newblock In {\em AAAI}, volume~8, pages 677--682, 2008.
+
+\bibitem{pan2011domain}
+Sinno~Jialin Pan, Ivor~W Tsang, James~T Kwok, and Qiang Yang.
+\newblock Domain adaptation via transfer component analysis.
+\newblock {\em IEEE Transactions on Neural Networks}, 22(2):199--210, 2011.
+
+\bibitem{pan2010survey}
+Sinno~Jialin Pan and Qiang Yang.
+\newblock A survey on transfer learning.
+\newblock {\em IEEE Transactions on knowledge and data engineering},
+  22(10):1345--1359, 2010.
+
+\bibitem{Busto_2017_ICCV}
+Pau Panareda~Busto and Juergen Gall.
+\newblock Open set domain adaptation.
+\newblock In {\em The IEEE International Conference on Computer Vision (ICCV)},
+  Oct 2017.
+
+\bibitem{7078994}
+V.~M. Patel, R.~Gopalan, R.~Li, and R.~Chellappa.
+\newblock Visual domain adaptation: A survey of recent advances.
+\newblock {\em IEEE Signal Processing Magazine}, 32(3):53--69, May 2015.
+
+\bibitem{DBLP:conf/icml/SaitoUH17}
+Kuniaki Saito, Yoshitaka Ushiku, and Tatsuya Harada.
+\newblock Asymmetric tri-training for unsupervised domain adaptation.
+\newblock In {\em Proceedings of the 34th International Conference on Machine
+  Learning, {ICML} 2017, Sydney, NSW, Australia, 6-11 August 2017}, pages
+  2988--2997, 2017.
+
+\bibitem{satpal2007domain}
+Sandeepkumar Satpal and Sunita Sarawagi.
+\newblock Domain adaptation of conditional probability models via feature
+  subsetting.
+\newblock In {\em PKDD}, volume 4702, pages 224--235. Springer, 2007.
+
+\bibitem{DBLP:journals/neco/ScholkopfSM98}
+Bernhard Sch{\"{o}}lkopf, Alexander~J. Smola, and Klaus{-}Robert M{\"{u}}ller.
+\newblock Nonlinear component analysis as a kernel eigenvalue problem.
+\newblock {\em Neural Computation}, 10(5):1299--1319, 1998.
+
+\bibitem{DBLP:journals/ijcv/ShaoKF14}
+Ming Shao, Dmitry Kit, and Yun Fu.
+\newblock Generalized transfer subspace learning through low-rank constraint.
+\newblock {\em International Journal of Computer Vision}, 109(1-2):74--93,
+  2014.
+
+\bibitem{4967588}
+S.~Si, D.~Tao, and B.~Geng.
+\newblock Bregman divergence-based regularization for transfer subspace
+  learning.
+\newblock {\em IEEE Transactions on Knowledge and Data Engineering},
+  22(7):929--942, July 2010.
+
+\bibitem{sugiyama2008direct}
+Masashi Sugiyama, Shinichi Nakajima, Hisashi Kashima, Paul~V Buenau, and
+  Motoaki Kawanabe.
+\newblock Direct importance estimation with model selection and its application
+  to covariate shift adaptation.
+\newblock In {\em Advances in neural information processing systems}, pages
+  1433--1440, 2008.
+
+\bibitem{tang2017visual}
+Yuxing Tang, Josiah Wang, Xiaofang Wang, Boyang Gao, Emmanuel Dellandrea,
+  Robert Gaizauskas, and Liming Chen.
+\newblock Visual and semantic knowledge transfer for large scale
+  semi-supervised object detection.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  2017.
+
+\bibitem{DBLP:journals/corr/TzengHZSD14}
+Eric Tzeng, Judy Hoffman, Ning Zhang, Kate Saenko, and Trevor Darrell.
+\newblock Deep domain confusion: Maximizing for domain invariance.
+\newblock {\em CoRR}, abs/1412.3474, 2014.
+
+\bibitem{DBLP:journals/tcyb/UzairM17}
+Muhammad Uzair and Ajmal~S. Mian.
+\newblock Blind domain adaptation with augmented extreme learning machine
+  features.
+\newblock {\em {IEEE} Trans. Cybernetics}, 47(3):651--660, 2017.
+
+\bibitem{DBLP:conf/aaai/WangWZX14}
+Hao Wang, Wei Wang, Chen Zhang, and Fanjiang Xu.
+\newblock Cross-domain metric learning based on information theory.
+\newblock In {\em Proceedings of the Twenty-Eighth {AAAI} Conference on
+  Artificial Intelligence, July 27 -31, 2014, Qu{\'{e}}bec City, Qu{\'{e}}bec,
+  Canada.}, pages 2099--2105, 2014.
+
+\bibitem{DBLP:journals/tip/XuFWLZ16}
+Yong Xu, Xiaozhao Fang, Jian Wu, Xuelong Li, and David Zhang.
+\newblock Discriminative transfer subspace learning via low-rank and sparse
+  representation.
+\newblock {\em {IEEE} Trans. Image Processing}, 25(2):850--863, 2016.
+
+\bibitem{6619251}
+C.~Yang, L.~Zhang, H.~Lu, X.~Ruan, and M.~H. Yang.
+\newblock Saliency detection via graph-based manifold ranking.
+\newblock In {\em 2013 IEEE Conference on Computer Vision and Pattern
+  Recognition}, pages 3166--3173, June 2013.
+
+\bibitem{Zhang_2017_CVPR}
+Jing Zhang, Wanqing Li, and Philip Ogunbona.
+\newblock Joint geometrical and statistical alignment for visual domain
+  adaptation.
+\newblock In {\em The IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, July 2017.
+
+\bibitem{Zhou04learningwith}
+Dengyong Zhou, Olivier Bousquet, Thomas~Navin Lal, Jason Weston, and Bernhard
+  Schölkopf.
+\newblock Learning with local and global consistency.
+\newblock In {\em Advances in Neural Information Processing Systems 16}, pages
+  321--328. MIT Press, 2004.
+
+\end{thebibliography}

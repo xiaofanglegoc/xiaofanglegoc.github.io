@@ -1,0 +1,70 @@
+This is BibTeX, Version 0.99d (TeX Live 2016/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: cdda.aux
+The style file: plain.bst
+Database file #1: cdda.bib
+Repeated entry---line 203 of file cdda.bib
+ : @inproceedings{pan2008transfer
+ :                               ,
+I'm skipping whatever remains of this entry
+A bad cross reference---entry "DBLP:conf/icml/SaitoUH17"
+refers to entry "DBLP:conf/icml/2017", which doesn't exist
+A bad cross reference---entry "DBLP:conf/cvpr/LongWDSY14"
+refers to entry "DBLP:conf/cvpr/2014", which doesn't exist
+A bad cross reference---entry "DBLP:conf/icml/GongGS13"
+refers to entry "DBLP:conf/icml/2013", which doesn't exist
+A bad cross reference---entry "DBLP:conf/icml/DonahueJVHZTD14"
+refers to entry "DBLP:conf/icml/2014", which doesn't exist
+A bad cross reference---entry "DBLP:conf/iccv/FernandoHST13"
+refers to entry "DBLP:conf/iccv/2013", which doesn't exist
+A bad cross reference---entry "DBLP:conf/aaai/WangWZX14"
+refers to entry "DBLP:conf/aaai/2014", which doesn't exist
+Warning--I didn't find a database entry for "DBLP:journals/tip/HouTYW16"
+Warning--I didn't find a database entry for "DBLP:conf/icml/2013"
+Warning--I didn't find a database entry for "DBLP:conf/cvpr/2014"
+Warning--I didn't find a database entry for "DBLP:conf/icml/2014"
+Warning--I didn't find a database entry for "DBLP:conf/iccv/2013"
+Warning--I didn't find a database entry for "DBLP:conf/aaai/2014"
+Warning--I didn't find a database entry for "DBLP:conf/icml/2017"
+You've used 45 entries,
+            2118 wiz_defined-function locations,
+            792 strings with 13788 characters,
+and the built_in function-call counts, 19521 in all, are:
+= -- 1924
+> -- 999
+< -- 22
++ -- 394
+- -- 345
+* -- 1429
+:= -- 3060
+add.period$ -- 141
+call.type$ -- 45
+change.case$ -- 305
+chr.to.int$ -- 0
+cite$ -- 45
+duplicate$ -- 743
+empty$ -- 1451
+format.name$ -- 345
+if$ -- 4179
+int.to.chr$ -- 0
+int.to.str$ -- 45
+missing$ -- 46
+newline$ -- 228
+num.names$ -- 92
+pop$ -- 327
+preamble$ -- 1
+purify$ -- 261
+quote$ -- 0
+skip$ -- 590
+stack$ -- 0
+substring$ -- 1322
+swap$ -- 257
+text.length$ -- 22
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 178
+warning$ -- 0
+while$ -- 176
+width$ -- 47
+write$ -- 502
+(There were 7 error messages)

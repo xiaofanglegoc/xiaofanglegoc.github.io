@@ -1,0 +1,89 @@
+\backcite {pan2010survey,7078994,DBLP:journals/corr/Csurka17}{{1}{I}{section.1}}
+\backcite {pan2010survey,7078994,DBLP:journals/corr/Csurka17}{{1}{I}{section.1}}
+\backcite {DBLP:conf/icml/SaitoUH17}{{1}{I}{section.1}}
+\backcite {pan2010survey,donahue2013semi}{{1}{I}{section.1}}
+\backcite {Busto_2017_ICCV,long2013transfer,DBLP:journals/tip/XuFWLZ16}{{1}{I}{section.1}}
+\backcite {tang2017visual}{{1}{I}{section.1}}
+\backcite {Zhang_2017_CVPR}{{1}{I}{section.1}}
+\backcite {pan2010survey}{{1}{I}{section.1}}
+\backcite {7078994,Busto_2017_ICCV}{{1}{I}{section.1}}
+\backcite {DBLP:journals/ijcv/ShaoKF14}{{1}{I}{section.1}}
+\backcite {DBLP:journals/tip/XuFWLZ16}{{1}{I}{section.1}}
+\backcite {4967588}{{1}{I}{section.1}}
+\backcite {gong2012geodesic}{{1}{I}{section.1}}
+\backcite {gretton2012kernel}{{1}{I}{section.1}}
+\backcite {ben2010theory,kifer2004detecting}{{1}{I}{section.1}}
+\backcite {kifer2004detecting}{{1}{I}{equation.1.1}}
+\backcite {pan2011domain}{{2}{I}{figure.caption.1}}
+\backcite {long2013transfer}{{2}{I}{figure.caption.1}}
+\backcite {long2013transfer}{{2}{I}{figure.caption.1}}
+\backcite {sugiyama2008direct}{{2}{II}{section.2}}
+\backcite {long2013transfer,Zhang_2017_CVPR,DBLP:journals/ijcv/ShaoKF14,DBLP:conf/cvpr/LongWDSY14,DBLP:journals/tip/XuFWLZ16,DBLP:journals/corr/LuoWHWTC17}{{2}{II}{section.2}}
+\backcite {pan2011domain,long2013transfer,Zhang_2017_CVPR,DBLP:conf/cvpr/LongWDSY14,JMLR:v17:15-207}{{2}{II}{section.2}}
+\backcite {4967588}{{2}{II}{section.2}}
+\backcite {pan2008transfer}{{2}{II}{section.2}}
+\backcite {pan2011domain}{{2}{II}{section.2}}
+\backcite {satpal2007domain}{{2}{II}{section.2}}
+\backcite {long2013transfer}{{2}{II}{section.2}}
+\backcite {4967588}{{2}{II}{section.2}}
+\backcite {pan2011domain}{{2}{II}{section.2}}
+\backcite {borgwardt2006integrating}{{2}{II}{section.2}}
+\backcite {long2013transfer}{{2}{II}{section.2}}
+\backcite {Zhou04learningwith}{{3}{II}{section.2}}
+\backcite {DBLP:journals/corr/LuoWHC17,DBLP:journals/ijcv/ShaoKF14,DBLP:journals/tip/XuFWLZ16}{{3}{II}{section.2}}
+\backcite {DBLP:journals/ijcv/ShaoKF14}{{3}{II}{section.2}}
+\backcite {DBLP:journals/tip/XuFWLZ16}{{3}{II}{section.2}}
+\backcite {DBLP:journals/corr/LuoWHC17}{{3}{II}{section.2}}
+\backcite {Zhang_2017_CVPR}{{3}{II}{section.2}}
+\backcite {long2013transfer}{{3}{II}{section.2}}
+\backcite {DBLP:journals/pami/GhifaryBKZ17}{{3}{II}{section.2}}
+\backcite {borgwardt2006integrating}{{4}{\unhbox \voidb@x \hbox {III-A}}{subsection.3.1}}
+\backcite {pan2011domain,long2013transfer,DBLP:journals/corr/LuoWHC17,DBLP:journals/ijcv/ShaoKF14,Zhang_2017_CVPR}{{4}{\unhbox \voidb@x \hbox {III-B}1}{subsubsection.3.2.1}}
+\backcite {long2013transfer,long2015learning}{{4}{\unhbox \voidb@x \hbox {III-B}2}{subsubsection.3.2.2}}
+\backcite {borgwardt2006integrating}{{4}{\unhbox \voidb@x \hbox {III-B}2}{subsubsection.3.2.2}}
+\backcite {pan2008transfer,pan2011domain,long2013transfer}{{5}{\unhbox \voidb@x \hbox {III-B}4}{subsubsection.3.2.4}}
+\backcite {DBLP:journals/tip/XuFWLZ16}{{5}{\unhbox \voidb@x \hbox {III-B}4}{subsubsection.3.2.4}}
+\backcite {6341755,6619251}{{5}{\unhbox \voidb@x \hbox {III-B}4}{equation.3.13}}
+\backcite {NIPS2001_2092}{{6}{\unhbox \voidb@x \hbox {III-B}4}{equation.3.15}}
+\backcite {fortin2000augmented,long2013transfer}{{6}{\unhbox \voidb@x \hbox {III-C}}{equation.3.19}}
+\backcite {Zhou04learningwith}{{6}{\unhbox \voidb@x \hbox {III-C}}{equation.3.20}}
+\backcite {6341755}{{6}{\unhbox \voidb@x \hbox {III-C}}{equation.3.20}}
+\backcite {6619251}{{6}{\unhbox \voidb@x \hbox {III-C}}{equation.3.20}}
+\backcite {fortin2000augmented,long2013transfer}{{7}{3}{AlgoLine.1.3}}
+\backcite {NIPS2001_2092}{{7}{13}{AlgoLine.1.13}}
+\backcite {DBLP:journals/pami/Hull94}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {726791}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {long2013transfer}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {long2013transfer}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {long2013transfer,DBLP:journals/tip/XuFWLZ16,DBLP:journals/tip/HouTYW16,DBLP:journals/ijcv/ShaoKF14}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {DBLP:journals/tcyb/UzairM17,DBLP:journals/tip/XuFWLZ16,DBLP:conf/icml/GongGS13,DBLP:journals/pami/GhifaryBKZ17,DBLP:journals/tip/DingF17,DBLP:journals/corr/LuoWHC17}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {DBLP:journals/pami/GhifaryBKZ17}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {gong2012geodesic}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {DBLP:conf/icml/DonahueJVHZTD14}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {DBLP:journals/tcyb/UzairM17}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {krizhevsky2012imagenet}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {DBLP:journals/tip/XuFWLZ16}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {DBLP:journals/tip/DingF17,long2013transfer}{{7}{\unhbox \voidb@x \hbox {IV-A}}{subsection.4.1}}
+\backcite {gong2012geodesic}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {pan2011domain}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {4967588}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {long2013transfer}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:journals/tcyb/UzairM17}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:journals/tcyb/UzairM17}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:conf/iccv/FernandoHST13}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:journals/corr/abs-1206-4683}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:conf/cvpr/LongWDSY14}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:journals/tip/DingF17}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:journals/pami/GhifaryBKZ17}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:conf/aaai/WangWZX14}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:journals/corr/TzengHZSD14}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:journals/ijcv/ShaoKF14}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:journals/tip/XuFWLZ16}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:journals/neco/ScholkopfSM98}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {Zhang_2017_CVPR}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {long2015learning}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {krizhevsky2012imagenet}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {jhuo2012robust}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {long2013transfer,DBLP:journals/tcyb/UzairM17,DBLP:journals/tip/DingF17,DBLP:journals/pami/GhifaryBKZ17,DBLP:journals/tip/XuFWLZ16,Zhang_2017_CVPR}{{8}{\unhbox \voidb@x \hbox {IV-B}}{subsection.4.2}}
+\backcite {DBLP:journals/corr/LuoWHC17,long2013transfer,DBLP:journals/tip/XuFWLZ16}{{8}{\unhbox \voidb@x \hbox {IV-C}}{subsection.4.3}}
+\backcite {pan2008transfer,long2015learning,DBLP:journals/corr/LuoWHC17,long2013transfer,DBLP:journals/tip/XuFWLZ16}{{8}{\unhbox \voidb@x \hbox {IV-C}}{subsection.4.3}}
