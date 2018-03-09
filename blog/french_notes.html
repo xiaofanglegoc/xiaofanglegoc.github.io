@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+.w3-row-padding img {margin-bottom: 12px}
+/* Set the width of the sidebar to 120px */
+.w3-sidebar {width: 120px;background: #222;}
+/* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+#main {margin-left: 120px}
+/* Remove margins from "page content" on small screens */
+@media only screen and (max-width: 600px) {#main {margin-left: 0}}
+
+div {
+    margin-bottom: 15px;
+    padding: 4px 12px;
+}
+
+.note {
+    background-color: #ffdddd;
+    border-left: 6px solid #f44336;
+}
+
+.eg {
+    background-color: #ddffdd;
+    border-left: 6px solid #4CAF50;
+}
+
+.info {
+    background-color: #e7f3fe;
+    border-left: 6px solid #2196F3;
+}
+
+
+.warning {
+    background-color: #ffffcc;
+    border-left: 6px solid #ffeb3b;
+}
+</style>
+<body class="w3-black">
+
+<!-- Icon Bar (Sidebar - hidden on small screens) -->
+<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
+
+  <!-- Avatar image in top left corner -->
+  <img src="/w3images/avatar_smoke.jpg" style="width:100%">
+  <a href="#home" class="w3-bar-item w3-button w3-padding-large w3-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>HOME</p>
+  </a>
+  <img src="/w3images/avatar_smoke.jpg" style="width:100%">
+  <a href="#阴阳" class="w3-bar-item w3-button w3-padding-large w3-black">
+    <i class="fa fa-eye w3-xxlarge"></i>
+    <p>阴阳</p>
+  </a>
+    <img src="/w3images/avatar_smoke.jpg" style="width:100%">
+  <a href="#介词" class="w3-bar-item w3-button w3-padding-large w3-black">
+    <i class="fa fa-eye w3-xxlarge"></i>
+    <p>介词</p>
+  </a>
+  
+</nav>
+
+<!-- Navbar on small screens (Hidden on medium and large screens) -->
+<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
+  <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
+  <a href="#home" class="w3-bar-item w3-button" style="width:25% !important">HOME</a>
+    <a href="#阴阳" class="w3-bar-item w3-button" style="width:25% !important">阴阳</a>
+    <a href="#介词" class="w3-bar-item w3-button" style="width:25% !important">介词</a>
+  </div>
+</div>
+
+<!-- Page Content -->
+<div class="w3-padding-large" id="main">
+  <!-- Header/签证 -->
+  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+    <h1 class="w3-jumbo"><span class="w3-hide-small">French Learning</span> Notes</h1>
+    <p></p>
+    <!-- <img src="/w3images/man_smoke.jpg" alt="boy" class="w3-image" width="992" height="1108"> -->
+  </header>
+
+  <!-- Section 阴阳 -->
+  <div class="w3-content w3-justify w3-text-grey w3-padding-64" id=“阴阳”>
+    <h2 class="w3-text-light-grey">阴阳</h2>
+     <h3 class="w3-padding-16 w3-text-light-grey">名词：国家</h3>
+    <ul class="w3-ul w3-hoverable w3-xlarge">
+    <li > 一般以-e结尾的是阴性，e.g. Hollande, Angleterre, 
+    <div class="note">
+    <p><strong>Note!</strong> Mexique是阳性 </p>
+    </div>
+  
+    <li> 介词 表示去某个国家前面的介词有en，au，a, aux. 一般在阴性国家或者大陆前用en， 在阳性单数前面用au， 在阳性复数前面用aux，城市前面用a
+    <div class="eg">
+    <p>e.g. <br> je vais en Angleterre.
+    <br>  je vais au Japon.
+    <br> je vais aux États-Unis.
+    <br>je vais à Paris.</p>
+    </div>
+    </ul>
+</div>
+<!--section 介词 -->
+  <div class="w3-content w3-justify w3-text-grey w3-padding-64" id=“介词”>
+    <h2 class="w3-text-light-grey">介词</h2>
+     <h3 class="w3-padding-16 w3-text-light-grey">介词：EN</h3>
+     <img src="img/en.png" width="100%">
+    
+   
+</div>
+
+
+
+</div>
+
+</body>
+</html>
+
